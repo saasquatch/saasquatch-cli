@@ -1,5 +1,7 @@
 A Command Line (CLI) interface for Referral SaaSquatch
 =============
+[![GitHub version](https://badge.fury.io/gh/saasquatch%2Fsaasquatch-cli.svg)](http://badge.fury.io/gh/saasquatch%2Fsaasquatch-cli)
+[![npm version](https://badge.fury.io/js/saasquatch-cli.svg)](http://badge.fury.io/js/saasquatch-cli)
 
 Makes it easy to perform certains tasks from the command line, such as deploying a custom Referral SaaSquatch theme.
 
