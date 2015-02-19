@@ -8,8 +8,8 @@ Makes it easy to perform certains tasks from the command line, such as deploying
 
 SaaSquatch-CLI is distributed as a Node module via NPM
 
-```bash
-saasquatch-cli publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
+```
+npm install -g saasquatch-cli
 ```
 
 
@@ -23,6 +23,6 @@ saasquatch-cli --help
 
 For example, to publish a theme.
 
-```bash
+```
 saasquatch-cli publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 ```
