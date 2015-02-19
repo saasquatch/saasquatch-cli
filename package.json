@@ -1,0 +1,18 @@
+{
+  "name": "saasquatch-cli",
+  "description": "Command Line (CLI) for Referral SaaSquatch api",
+  "version": "0.0.1",
+  "license": "APACHE",
+  "repository": {
+      "type" : "git",
+      "url" : "http://github.com/saasquatch/saasquatch-cli.git"
+  },
+  "bin": {
+      "saasquatch-cli" : "./saasquatch-cli.js"
+  },
+  "dependencies": {
+    "commander": "^2.6.0",
+    "request": "^2.53.0",
+    "chalk": "^0.5.1"
+  }
+}
