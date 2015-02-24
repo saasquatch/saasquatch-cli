@@ -13,6 +13,6 @@
   "dependencies": {
     "commander": "^2.6.0",
     "request": "^2.53.0",
-    "chalk": "^0.5.1"
+    "chalk": "^1.0.0"
   }
 }
