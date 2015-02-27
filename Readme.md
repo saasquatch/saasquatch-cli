@@ -5,6 +5,7 @@ A Command Line (CLI) interface for Referral SaaSquatch
 
 Makes it easy to perform certains tasks from the command line, such as deploying a custom Referral SaaSquatch theme.
 
+![demogif](https://cloud.githubusercontent.com/assets/1157086/6423060/48428272-be95-11e4-81cc-eb95f8983f5c.gif)
 
 ## Installing
 
