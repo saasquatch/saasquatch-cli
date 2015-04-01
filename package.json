@@ -8,7 +8,7 @@
       "url" : "http://github.com/saasquatch/saasquatch-cli.git"
   },
   "bin": {
-      "saasquatch-cli" : "./saasquatch-cli.js"
+    "squatch" : "./saasquatch-cli.js"
   },
   "dependencies": {
     "commander": "^2.6.0",
