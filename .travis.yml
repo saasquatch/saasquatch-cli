@@ -3,7 +3,7 @@ deploy:
   provider: npm
   email: logan@saasquat.ch
   api_key:
-    secure: YW51f8NNhuqhQgr3/sOsbbCXUs7BOVGS9etrq2g2ulM5Z/1dN74t+QbvLelM5cdCE/XKSAbchGc+nca24kJM09fvHlU8bHWCew1xofeePmUWU2YoSXGH2SWdQqQCmH0M8ujqNHAXMDICqptZgqV41qH+wNuwfl8IFezbIxPlOYs=
+    secure: jbgoY20JdFJpvzwkanYKyjywhX95nJ0L//CS+VcTRDTZPx5qRM3dLOxWOT0ZWmjvsdCEHi5/LPyxFzREzFPVm+mJAonhMFKbQckAjrPBE4JHyOeeOYJ+FePDYZTxgnZsvXOya9HhP/SUukqJyQkdNY5lEN/eOkX8lks/1J3iGMs=
   on:
     tags: true
     repo: saasquatch/saasquatch-cli
