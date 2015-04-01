@@ -1,31 +1,33 @@
-A Command Line (CLI) interface for Referral SaaSquatch
-=============
+saasquatch-cli
+==============
+
 [![GitHub version](https://badge.fury.io/gh/saasquatch%2Fsaasquatch-cli.svg)](http://badge.fury.io/gh/saasquatch%2Fsaasquatch-cli)
 [![npm version](https://badge.fury.io/js/saasquatch-cli.svg)](http://badge.fury.io/js/saasquatch-cli)
 
-Makes it easy to perform certains tasks from the command line, such as deploying a custom Referral SaaSquatch theme.
+A command line interface to the Referral SaaSquatch API.
 
 ![demogif](https://cloud.githubusercontent.com/assets/1157086/6423060/48428272-be95-11e4-81cc-eb95f8983f5c.gif)
 
+
 ## Installing
 
-SaaSquatch-CLI is distributed as a Node module via NPM
+Install via npm (requires node.js).
 
-```
+```bash
 npm install -g saasquatch-cli
 ```
 
 
-## Usage 
+## Usage
 
-Once installed you can use `saasquatch-cli` via the command line
+The tool can be accessed with the `squatch` command on the command line:
 
+```bash
+squatch --help
 ```
-saasquatch-cli --help
-```
 
-For example, to publish a theme.
+### [Deploying a custom theme](http://docs.referralsaasquatch.com/themes/publish/)
 
-```
-saasquatch-cli publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
+```bash
+squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 ```
