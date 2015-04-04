@@ -1,25 +1,36 @@
-#!/usr/bin/env node
+var
+  program = require('commander'),
+  chalk   = require('chalk'),
+  request = require('request');
 
-var program = require('commander');
-var chalk   = require('chalk');
-var request = require('request');
+// TODO: Remove gulp dependency (ex. include and use `less` instead of `gulp-less`)
+var gulp       = require('gulp'),
+    gutil      = require('gulp-util'),
+    rename     = require('gulp-rename'),
+    replace    = require('gulp-replace'),
+    less       = require('gulp-less'),
+    handlebars = require('gulp-compile-handlebars'),
+    connect    = require('gulp-connect'),
+    open       = require('gulp-open');
 
 program
   .version('1.0.0');
 
-var publish = program.command('publish');
+var
+  publish = program.command('publish'),
+  serve   = program.command('serve');
 
 publish.description('Triggers a publish of the theme. Pulls the HEAD of the configured Git repository')
   .option('-t, --tenant [tenant]', 'REQUIRED - which tenant to use')
   .option('-k, --apiKey [apiKey]', 'REQUIRED - which apiKey to use (for corresponding tenant)')
   .action(function(options) {
-    var tenant = options.tenant;
-    var apiKey = options.apiKey;
+    var
+      tenant = options.tenant,
+      apiKey = options.apiKey;
 
     // Validates inputs
     if (!options || !apiKey) {
-      console.log('');
-      console.log(chalk.yellow('  INVALID INPUT - Tenant and Apikey both need to be specific to publish'));
+      console.log(chalk.yellow('\n  INVALID INPUT - Tenant and Apikey both need to be specific to publish'));
       publish.outputHelp();
       return;
     }
@@ -27,8 +38,8 @@ publish.description('Triggers a publish of the theme. Pulls the HEAD of the conf
     var magicConstants = {
       completedMsg          : 'PUBLISH COMPLETED',
       errorMsgPrefix        : 'ERROR',
-      deploySuccessCode     : 202,
       themeStatusSuccessCode: 200,
+      deploySuccessCode     : 202,
       pollingInterval       : 500
     };
 
@@ -89,7 +100,7 @@ publish.description('Triggers a publish of the theme. Pulls the HEAD of the conf
       }, function() {
         if (lastMsg === magicConstants.completedMsg) {
           return; // Quit with success
-        } else if (lastMsg.indexOf(magicConstants.errorMsgPrefix) == 0) {
+        } else if (lastMsg.indexOf(magicConstants.errorMsgPrefix) === 0) {
           return; // Quit with Error
         } else {
           var newSinceTime = thisLoopLatest ? thisLoopLatest : sinceTime;
@@ -125,6 +136,15 @@ publish.description('Triggers a publish of the theme. Pulls the HEAD of the conf
         // Triggers log polling since `previousDeployTime`
         watchStatusLog(previousDeployTime + 1);
       });
+    });
+  });
+
+serve.description('Starts a server for a theme, with Less and Handlebars compilation and live reloading.')
+  .action(function(options) {
+    connect.server({
+      root: __dirname,
+      livereload: true,
+      host: '0.0.0.0'
     });
   });
 
