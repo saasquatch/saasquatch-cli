@@ -55,15 +55,18 @@ gulp.task('hbs', function() {
       assets: function (filepath) {
         return '/assets/' + filepath;
       },
+
       block: function (name, options) {
         var context = extend(this, options.hash);
         return options.fn(context);
       },
+
       color: function (string) {
         if (string.match(/^#[0-9a-f]{3,6}$/)) {
           return string;
         }
       },
+
       format: function(string, args) {
         var
           regExp,
@@ -79,6 +82,7 @@ gulp.task('hbs', function() {
 
         return string;
       },
+
       gravatar: function (email, args) {
         var defaultGravatar = 'blank',
             forceDefault    = '';
@@ -94,13 +98,7 @@ gulp.task('hbs', function() {
         }
         return 'http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d51?d=' + defaultGravatar + forceDefault;
       },
-      ifEquals: function(val1, val2, options) {
-        var fn;
 
-        fn = val1 === val2 ? 'fn' : 'inverse';
-
-        return options[fn](this);
-      },
       ifInRange: function(val1, min, max, options) {
         var fn;
 
@@ -108,12 +106,11 @@ gulp.task('hbs', function() {
 
         return options[fn](this);
       },
-      lookup: function(obj, field, options) {
-        return obj && obj[field];
-      },
+
       lower: function (string) {
         return string.toLowerCase();
       },
+
       math: function(val1, val2, val3, val4, val5, val6, options) {
         var toBeEvaled = '',
             vals = {
@@ -136,9 +133,11 @@ gulp.task('hbs', function() {
 
         return + (eval(toBeEvaled));
       },
+
       stringFormat: function (string) {
         return string;
       },
+
       times: function(n, block) {
         var string = '';
         for (var i = 0; i < n; ++i) {
@@ -146,13 +145,7 @@ gulp.task('hbs', function() {
         }
         return string;
       },
-      unlessEquals: function(val1, val2, options) {
-        var fn;
 
-        fn = val1 !== val2 ? 'fn' : 'inverse';
-
-        return options[fn](this);
-      },
       urlencode: function (url) {
         return url;
       }
