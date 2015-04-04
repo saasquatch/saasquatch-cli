@@ -11,8 +11,16 @@
     "squatch" : "./saasquatch-cli.js"
   },
   "dependencies": {
-    "commander": "^2.6.0",
-    "request": "^2.53.0",
-    "chalk": "^1.0.0"
+    "chalk": "^1.0.0",
+    "commander": "^2.7.1",
+    "gulp": "^3.8.11",
+    "gulp-connect": "^2.2.0",
+    "gulp-less": "^3.0.2",
+    "gulp-open": "^0.3.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.3",
+    "gulp-util": "^3.0.4",
+    "gulp-compile-handlebars": "^0.4.4",
+    "request": "^2.54.0"
   }
 }
