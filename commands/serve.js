@@ -18,7 +18,7 @@ module.exports = function(program) {
     .description('Start a server for a theme')
     .action(function(options) {
       connect.server({
-        root: __dirname,
+        root: process.cwd(),
         livereload: true,
         host: '0.0.0.0'
       });
