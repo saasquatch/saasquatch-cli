@@ -12,6 +12,7 @@ var gulp       = require('gulp'),
 function extend(target) {
   'use strict';
   var sources = [].slice.call(arguments, 1);
+
   sources.forEach(function(source) {
     for (var prop in source) {
       if (source.hasOwnProperty(prop)) {
@@ -19,6 +20,7 @@ function extend(target) {
       }
     }
   });
+
   return target;
 }
 
