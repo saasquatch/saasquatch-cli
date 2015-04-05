@@ -5,8 +5,8 @@ var
   program = require('commander'),
   chalk   = require('chalk'),
 
-  publishCommand = require('./commands/publish')(program),
-  serveCommand   = require('./commands/serve')(program);
+  publishCommand = require('./commands/publish'),
+  serveCommand   = require('./commands/serve');
 
 program
   .version('1.0.0');
