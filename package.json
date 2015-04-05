@@ -10,6 +10,9 @@
   "bin": {
     "squatch" : "./index.js"
   },
+  "scripts": {
+    "test": "jshint ."
+  },
   "dependencies": {
     "chalk": "^1.0.0",
     "commander": "^2.7.1",
@@ -22,5 +25,8 @@
     "gulp-util": "^3.0.4",
     "gulp-compile-handlebars": "^0.4.4",
     "request": "^2.55.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.6.3"
   }
 }

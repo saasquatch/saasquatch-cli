@@ -1,3 +1,5 @@
+'use strict';
+
 var
   chalk   = require('chalk'),
   request = require('request');

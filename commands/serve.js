@@ -1,3 +1,5 @@
+'use strict';
+
 // TODO: Remove gulp dependency (ex. include and use `less` instead of `gulp-less`)
 var
   gulp       = require('gulp'),
