@@ -1,16 +1,16 @@
+'use strict';
+
 var fs         = require('fs');
 
 var gulp       = require('gulp'),
     gutil      = require('gulp-util'),
     rename     = require('gulp-rename'),
-    replace    = require('gulp-replace'),
     less       = require('gulp-less'),
     handlebars = require('gulp-compile-handlebars'),
     connect    = require('gulp-connect'),
     open       = require('gulp-open');
 
 function extend(target) {
-  'use strict';
   var sources = [].slice.call(arguments, 1);
 
   sources.forEach(function(source) {
@@ -113,7 +113,7 @@ gulp.task('hbs', function() {
         return string.toLowerCase();
       },
 
-      math: function(val1, val2, val3, val4, val5, val6, options) {
+      math: function(val1, val2, val3, val4, val5, val6) {
         var toBeEvaled = '',
             vals = {
               val1: val1,
@@ -132,8 +132,9 @@ gulp.task('hbs', function() {
             toBeEvaled += currentVal;
           }
         }
-
+        /* jshint -W061 */
         return + (eval(toBeEvaled));
+        /* jshint +W061 */
       },
 
       stringFormat: function (string) {
