@@ -21,6 +21,6 @@
     "gulp-replace": "^0.5.3",
     "gulp-util": "^3.0.4",
     "gulp-compile-handlebars": "^0.4.4",
-    "request": "^2.54.0"
+    "request": "^2.55.0"
   }
 }
