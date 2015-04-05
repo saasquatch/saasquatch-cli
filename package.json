@@ -22,10 +22,9 @@
     "gulp-compile-handlebars": "^0.4.4",
     "gulp-connect": "^2.2.0",
     "gulp-less": "^3.0.2",
-    "gulp-open": "^0.3.2",
     "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.3",
     "gulp-util": "^3.0.4",
+    "open": "0.0.5",
     "request": "^2.55.0"
   },
   "devDependencies": {
