@@ -132,6 +132,8 @@ gulp.task('hbs', function() {
             toBeEvaled += currentVal;
           }
         }
+
+        // Disable eval error for this one instance http://jslinterrors.com/eval-is-evil
         /* jshint -W061 */
         return + (eval(toBeEvaled));
         /* jshint +W061 */
