@@ -4,6 +4,7 @@
 var
   fs = require('fs'),
 
+  chalk    = require('chalk'),
   chokidar = require('chokidar'),
   extend   = require('extend'),
 
@@ -17,6 +18,7 @@ var
   open       = require('gulp-open');
 
 var
+  css,
   command,
   cwd,
   html,
@@ -26,12 +28,25 @@ var
 cwd = process.cwd();
 
 html = function() {
-  return gulp.src('*.html')
+  gulp.src('*.html')
+    .pipe(connect.reload());
+};
+
+css = function() {
+  gulp.src('assets/css/widget.less')
+    .pipe(
+      less()
+    ).on('error', function(err) {
+      console.log(chalk.red(err.message));
+      this.emit('end');
+    })
+    .pipe(gulp.dest('assets/css'))
     .pipe(connect.reload());
 };
 
 watch = function() {
   chokidar.watch('*.html').on('all', html);
+  chokidar.watch('assets/css/*.less').on('all', css);
 };
 
 server = function() {
@@ -50,6 +65,7 @@ command = function(program) {
   serve
     .description('Start a server for a theme')
     .action(function() {
+      css();
       server();
       watch();
     });
