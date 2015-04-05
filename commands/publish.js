@@ -112,7 +112,7 @@ module.exports = function(program) {
           uri: 'https://' + auth + 'app.referralsaasquatch.com/api/v1/' + tenant + '/theme/publish',
           method: 'POST',
           json: {}
-        }, function(error, response, body) {
+        }, function(error, response) {
           if (error) {
             console.log('Unhandled error publishing theme', error);
             return;
