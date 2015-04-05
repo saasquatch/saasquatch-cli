@@ -7,9 +7,10 @@ module.exports = function(program) {
 
   publish = program.command('publish');
 
-  publish.description('Triggers a publish of the theme. Pulls the HEAD of the configured Git repository')
-    .option('-t, --tenant [tenant]', 'REQUIRED - which tenant to use')
-    .option('-k, --apiKey [apiKey]', 'REQUIRED - which apiKey to use (for corresponding tenant)')
+  publish
+    .description('Publish a theme')
+    .option('-t, --tenant [tenant]', 'required - which tenant to use')
+    .option('-k, --apiKey [apiKey]', 'required - which API key to use (for corresponding tenant)')
     .action(function(options) {
       var
         tenant = options.tenant,
@@ -17,7 +18,7 @@ module.exports = function(program) {
 
       // Validates inputs
       if (!options || !apiKey) {
-        console.log(chalk.yellow('\n  INVALID INPUT - Tenant and Apikey both need to be specific to publish'));
+        console.log(chalk.yellow('\n  Missing parameter. Both tenant and API key need to be specified to publish:'));
         publish.outputHelp();
         return;
       }
@@ -125,7 +126,6 @@ module.exports = function(program) {
         });
       });
     });
-
 
   return publish;
 };

@@ -25,7 +25,9 @@ The tool can be accessed with the `squatch` command on the command line:
 squatch --help
 ```
 
-### [Deploying a custom theme](http://docs.referralsaasquatch.com/themes/publish/)
+### [Publish a custom theme](http://docs.referralsaasquatch.com/themes/publish/)
+
+Uses the HEAD of the configured repository.
 
 ```bash
 squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
