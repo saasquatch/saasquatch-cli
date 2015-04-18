@@ -26,6 +26,7 @@ var
   server,
   watch,
   openUrl,
+  alphaMessage,
 
   command;
 
@@ -92,6 +93,9 @@ openUrl = function() {
   open('http://0.0.0.0:8080');
 };
 
+alphaMessage = function() {
+  console.log(chalk.yellow('The serve command is alpha and is not a perfect replica of the live environment.\nMore details: https://github.com/saasquatch/saasquatch-cli/#why-is-this-alpha'));
+};
 
 command = function(program) {
   var serve;
@@ -99,8 +103,9 @@ command = function(program) {
   serve = program.command('serve');
 
   serve
-    .description('Start a server for a theme')
+    .description('[alpha] Start a server for a theme')
     .action(function() {
+      alphaMessage();
       server();
       hbs();
       css();
