@@ -2,6 +2,7 @@ saasquatch-cli
 ==============
 
 [![npm version](https://badge.fury.io/js/saasquatch-cli.svg)](http://badge.fury.io/js/saasquatch-cli)
+[![Build Status](https://travis-ci.org/saasquatch/saasquatch-cli.svg?branch=master)](https://travis-ci.org/saasquatch/saasquatch-cli)
 
 A command line interface to the Referral SaaSquatch API.
 
