@@ -12,7 +12,7 @@ A command line interface to the Referral SaaSquatch API.
 Install via npm (requires node.js).
 
 ```bash
-npm install -g saasquatch-cli
+$ npm install -g saasquatch-cli
 ```
 
 
@@ -21,7 +21,7 @@ npm install -g saasquatch-cli
 The tool can be accessed with the `squatch` command on the command line:
 
 ```bash
-squatch --help
+$ squatch --help
 ```
 
 ### squatch publish
