@@ -78,7 +78,7 @@ watch = function() {
   chokidar.watch('*.html').on('change', html);
   chokidar.watch('assets/css/*.less').on('change', css);
   chokidar.watch('assets/javascript/*.js').on('change', js);
-  chokidar.watch(['*.json', 'templates/*.hbs']).on('change', hbs);
+  chokidar.watch(['*.json', 'templates/**/*.hbs']).on('change', hbs);
 };
 
 server = function() {
