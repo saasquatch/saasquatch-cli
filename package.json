@@ -15,18 +15,18 @@
   },
   "dependencies": {
     "chalk": "^1.0.0",
-    "chokidar": "^1.0.0-rc5",
-    "commander": "^2.7.1",
-    "extend": "^2.0.0",
+    "chokidar": "^1.0.1",
+    "commander": "^2.8.1",
+    "extend": "^2.0.1",
     "gulp": "^3.8.11",
-    "gulp-compile-handlebars": "^0.4.4",
+    "gulp-compile-handlebars": "^0.5.0",
     "gulp-connect": "^2.2.0",
-    "gulp-less": "^3.0.2",
+    "gulp-less": "^3.0.3",
     "gulp-rename": "^1.2.2",
     "open": "0.0.5",
     "request": "^2.55.0"
   },
   "devDependencies": {
-    "jshint": "^2.6.3"
+    "jshint": "^2.7.0"
   }
 }
