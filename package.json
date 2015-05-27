@@ -24,7 +24,8 @@
     "gulp-less": "^3.0.3",
     "gulp-rename": "^1.2.2",
     "open": "0.0.5",
-    "request": "^2.55.0"
+    "request": "^2.55.0",
+    "sprintf-js": "^1.0.2"
   },
   "devDependencies": {
     "jshint": "^2.7.0"
