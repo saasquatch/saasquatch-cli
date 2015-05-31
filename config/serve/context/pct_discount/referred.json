@@ -1,0 +1,9 @@
+{
+  "programDetails": {
+    "referredRewardDetails": {
+      "rewardType": "PCT_DISCOUNT",
+      "discountPercent": 10,
+      "monthsDiscountValid": null
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "programDetails": {
+    "referredRewardDetails": {
+      "rewardType": "CREDIT",
+      "name": "Dollar Credit",
+      "unit": "CENTS",
+      "credit": 10000
+    }
+  }
+}

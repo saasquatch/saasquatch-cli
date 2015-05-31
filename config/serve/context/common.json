@@ -1,0 +1,32 @@
+{
+  "tenantAlias": "test_a7fprfjx7tzxh",
+  "companyName": "Service",
+  "mode": "EMBED",
+  "isSecureUrl": false,
+  "segmentApiKey": "ysufztt1rq",
+  "rewardLimitReached": false,
+  "assetVersion": "kNCAJgJL",
+  "headerVersion": "8",
+  "referredBy": {
+    "referredByUser": {
+      "id": "5cukkyfnuhbyjdwxywhcs47u_778239",
+      "accountId": "5cukkyfnuhbyjdwxywhcs47u",
+      "referralCode": "KARLHORKY",
+      "email": "karl@example.com",
+      "imageUrl": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?d=blank",
+      "firstName": "Karl",
+      "lastName": "Horky"
+    },
+    "dateReferred": 1404121071158
+  },
+  "shareLinks": {
+    "shareLink": "http://ssqt.ch/1oNcJTy",
+    "facebookShareLink": "http://ssqt.ch/1oNcLee",
+    "twitterShareLink": "http://ssqt.ch/1oNcLed",
+    "emailShareLink": "http://ssqt.ch/1oNcJDj",
+    "mobileShareLink": "http://ssqt.ch/1oNcJTB",
+    "mobileFacebookShareLink": "http://ssqt.ch/1oNcJTz",
+    "mobileTwitterShareLink": "http://ssqt.ch/1oNcLef",
+    "mobileEmailShareLink": "http://ssqt.ch/1oNcJDl"
+  }
+}

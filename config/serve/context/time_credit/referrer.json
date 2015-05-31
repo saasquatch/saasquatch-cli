@@ -1,0 +1,225 @@
+{
+  "referrals": [
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_778239",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "ERICMASON",
+        "email": "eric@example.com",
+        "imageUrl": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?d=blank",
+        "firstName": "Eric",
+        "lastName": "Mason"
+      },
+      "dateReferred": 1407879101207,
+      "paid": true,
+      "referrerReward": {
+        "value": 1,
+        "unit": "MONTH",
+        "name": "Free Month"
+      }
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_756659",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "TORBSVENWERNIER",
+        "email": "torben@example.com",
+        "imageUrl": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?d=blank",
+        "firstName": "Torbsven",
+        "lastName": "Wernier"
+      },
+      "dateReferred": 1407886303019,
+      "paid": true,
+      "referrerReward": {
+        "value": 1,
+        "unit": "MONTH",
+        "name": "Free Month"
+      }
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_778837",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "WILLFRASER",
+        "email": "will@example.com",
+        "imageUrl": "",
+        "firstName": "Will",
+        "lastName": "Fraser"
+      },
+      "dateReferred": 1407886756659,
+      "paid": true,
+      "referrerReward": {
+        "value": 1,
+        "unit": "MONTH",
+        "name": "Free Month"
+      }
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_778239",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "ERICMASON",
+        "email": "eric@example.com",
+        "imageUrl": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?d=blank",
+        "firstName": "Eric",
+        "lastName": "Mason"
+      },
+      "dateReferred": 1407879101207,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_756659",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "TORBSVENWERNIER",
+        "email": "torben@example.com",
+        "imageUrl": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?d=blank",
+        "firstName": "Torbsven",
+        "lastName": "Wernier"
+      },
+      "dateReferred": 1407886303019,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_778837",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "WILLFRASER",
+        "email": "will@example.com",
+        "imageUrl": "",
+        "firstName": "Will",
+        "lastName": "Fraser"
+      },
+      "dateReferred": 1407886756659,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Myers"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    },
+    {
+      "referredUser": {
+        "id": "5cukkyfnuhbyjdwxyxphv47u_423638",
+        "accountId": "5cukkyfnuhbyjdwxyxphv47u",
+        "referralCode": "JEREMYMYERS",
+        "email": "jeremy@example.com",
+        "imageUrl": "",
+        "firstName": "Jeremy",
+        "lastName": "Alan"
+      },
+      "dateReferred": 1407886778837,
+      "paid": false,
+      "referrerReward": null
+    }
+  ],
+  "referralsLength": 14,
+  "referralProgress": {
+    "active": 40,
+    "available": 60
+  },
+  "programDetails": {
+    "referrerRewardDetails": {
+      "rewardType": "TIME_CREDIT",
+      "name": "Free Month",
+      "unit": "MONTH",
+      "credit": 1
+    }
+  }
+}

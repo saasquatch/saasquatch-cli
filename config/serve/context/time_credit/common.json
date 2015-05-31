@@ -1,0 +1,11 @@
+{
+  "rewardBalances": [
+    {
+      "count": 4,
+      "totalAssignedCredit": 4,
+      "totalRedeemedCredit": 1,
+      "unit": "MONTH",
+      "type": "CREDIT"
+    }
+  ]
+}

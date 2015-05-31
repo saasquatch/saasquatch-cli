@@ -1,0 +1,11 @@
+{
+  "rewardBalances": [
+    {
+      "count": 1,
+      "totalAssignedCredit": 10000,
+      "totalRedeemedCredit": 0,
+      "unit": "CENTS",
+      "type": "CREDIT"
+    }
+  ]
+}

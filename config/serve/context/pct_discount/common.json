@@ -1,0 +1,10 @@
+{
+  "rewardBalances": [
+    {
+      "totalDiscountPercent": 10,
+      "referrerDiscountPercent": 0,
+      "referredDiscountPercent": 10,
+      "type": "PCT_DISCOUNT"
+    }
+  ]
+}

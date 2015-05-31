@@ -1,0 +1,10 @@
+{
+  "programDetails": {
+    "referredRewardDetails": {
+      "rewardType": "TIME_CREDIT",
+      "name": "Free Month",
+      "unit": "MONTH",
+      "credit": 1
+    }
+  }
+}
