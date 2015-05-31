@@ -52,7 +52,7 @@ css = function() {
 };
 
 js = function() {
-  gulp.src('*.js')
+  gulp.src('assets/javascript/*.js')
     .pipe(connect.reload());
 };
 
