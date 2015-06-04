@@ -51,8 +51,8 @@ css = function() {
     .pipe(connect.reload());
 };
 
-js = function() {
-  gulp.src('assets/javascript/*.js')
+js = function(path) {
+  gulp.src(path)
     .pipe(connect.reload());
 };
 
@@ -76,8 +76,8 @@ hbs = function() {
 
 watch = function() {
   chokidar.watch('*.html').on('change', html);
-  chokidar.watch('assets/css/*.less').on('change', css);
-  chokidar.watch('assets/javascript/*.js').on('change', js);
+  chokidar.watch('assets/css/**/*.less').on('change', css);
+  chokidar.watch('assets/javascript/**/*.js').on('change', js);
   chokidar.watch(['*.json', 'templates/**/*.hbs']).on('change', hbs);
 };
 
