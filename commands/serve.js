@@ -85,12 +85,15 @@ server = function() {
   connect.server({
     root: process.cwd(),
     livereload: true,
-    host: '0.0.0.0'
+    host: process.env.IP || '0.0.0.0',
+    port: process.env.PORT || '8080'
   });
 };
 
 openUrl = function() {
-  open('http://0.0.0.0:8080');
+  var host = process.env.IP || '0.0.0.0';
+  var port = process.env.PORT || '8080';
+  open('http://' + host + ':' + port);
 };
 
 alphaMessage = function() {
