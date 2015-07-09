@@ -3,6 +3,8 @@
 var
   fs = require('fs'),
 
+  extend   = require('extend'),
+  defaults = require('json-schema-defaults'),
   chalk    = require('chalk'),
   chokidar = require('chokidar'),
   open     = require('open'),
@@ -58,10 +60,26 @@ js = function(path) {
 
 hbs = function() {
   var
+    templateDataPath,
+    messagesPath,
     templateData,
+    messagesSchema,
+    messages,
     options;
 
+  templateDataPath = './customer.json';
+  messagesPath     = './variables.json';
+
   templateData = JSON.parse(fs.readFileSync('./customer.json', 'utf-8'));
+
+  if (fs.existsSync(messagesPath)) {
+    messagesSchema = JSON.parse(fs.readFileSync(messagesPath));
+    messages = {
+      variables: defaults(messagesSchema)
+    };
+
+    templateData = extend(templateData, messages);
+  }
 
   options = {
     helpers: helpers,
