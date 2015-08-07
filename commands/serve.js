@@ -75,6 +75,7 @@ hbs = function() {
   if (fs.existsSync(messagesPath)) {
     messagesSchema = JSON.parse(fs.readFileSync(messagesPath));
     messages = {
+      variablesSchema: messagesSchema,
       variables: defaults(messagesSchema)
     };
 
@@ -99,10 +100,10 @@ watch = function() {
   chokidar.watch(['*.json', 'templates/**/*.hbs']).on('change', hbs);
 };
 
-server = function() {
+server = function(livereload) {
   connect.server({
     root: process.cwd(),
-    livereload: true,
+    livereload: livereload,
     host: process.env.IP || '0.0.0.0',
     port: process.env.PORT || '8080'
   });
@@ -123,11 +124,20 @@ command = function(program) {
 
   serve = program.command('serve');
 
+  var toBoolean = function(string){
+  	switch(string.toLowerCase()){
+  		case "true": case "yes": case "1": return true;
+  		case "false": case "no": case "0": return false;
+  		default: null;
+  	}
+  };
+  
   serve
     .description('[alpha] Start a server for a theme')
-    .action(function() {
+    .option('--livereload [livereload]', 'Enable the LiveReload plugin. Default to true', toBoolean, true)
+    .action(function(options) {
       alphaMessage();
-      server();
+      server(options.livereload);
       hbs();
       css();
       watch();

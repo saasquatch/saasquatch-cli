@@ -27,7 +27,8 @@
     "json-schema-defaults": "^0.1.1",
     "open": "0.0.5",
     "request": "^2.57.0",
-    "sprintf-js": "^1.0.2"
+    "sprintf-js": "^1.0.2",
+    "mathjs": "^2.0.1"
   },
   "devDependencies": {
     "jshint": "^2.8.0"
