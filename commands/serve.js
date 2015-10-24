@@ -126,12 +126,12 @@ command = function(program) {
 
   var toBoolean = function(string){
   	switch(string.toLowerCase()){
-  		case "true": case "yes": case "1": return true;
-  		case "false": case "no": case "0": return false;
-  		default: null;
+  		case 'true': case 'yes': case '1': return true;
+  		case 'false': case 'no': case '0': return false;
+  		default: return null;
   	}
   };
-  
+
   serve
     .description('[alpha] Start a server for a theme')
     .option('--livereload [livereload]', 'Enable the LiveReload plugin. Default to true', toBoolean, true)
