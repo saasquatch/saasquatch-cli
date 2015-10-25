@@ -9,7 +9,7 @@ var
   serveCommand   = require('./commands/serve');
 
 program
-  .version('1.1.11');
+  .version('1.2.0');
 
 publishCommand(program);
 serveCommand(program);
@@ -17,7 +17,7 @@ serveCommand(program);
 program
   .command('*')
   .description('Prints help')
-  .action(function() {
+  .action(function () {
     console.error(chalk.red('\n  Invalid command. Please use one of the following:'));
     program.outputHelp();
   });

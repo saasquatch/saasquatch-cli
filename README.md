@@ -43,13 +43,20 @@ $ squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 
 :exclamation: **alpha**
 
-Start local server, with Handlebars and LESS compilation and LiveReload.
+Start local static and API servers, with Handlebars and LESS compilation and LiveReload.
 
 ```bash
 $ squatch serve
 [10:28:54] Server started http://0.0.0.0:8080
 [10:28:54] LiveReload started on port 35729
+API listening at http://0.0.0.0:8090
 ```
+
+#### Configuring the API Server
+
+Create an api.json in your theme directory with request / response pairs (exchanges) defined. Also add the `apiEndpoint` key to your customer.json.
+
+[Example](https://gist.github.com/karlhorky/3cbbbf0b07a9f5ebde16)
 
 #### Why is this alpha?
 

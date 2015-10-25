@@ -4,7 +4,7 @@ var
   chalk   = require('chalk'),
   request = require('request');
 
-module.exports = function(program) {
+module.exports = function (program) {
   var publish;
 
   publish = program.command('publish');
@@ -13,7 +13,7 @@ module.exports = function(program) {
     .description('Publish a theme')
     .option('-t, --tenant [tenant]', 'required - which tenant to use')
     .option('-k, --apiKey [apiKey]', 'required - which API key to use (for corresponding tenant)')
-    .action(function(options) {
+    .action(function (options) {
       var
         tenant = options.tenant,
         apiKey = options.apiKey;
@@ -40,11 +40,11 @@ module.exports = function(program) {
 
       // Gets the theme status log, outputting each logItem to `cb`
       // TODO: Rewrite to promises instead of callbacks, use less callbacks
-      var getStatus = function(cb, doneCb) {
+      var getStatus = function (cb, doneCb) {
         request({
           uri: 'https://' + auth + 'app.referralsaasquatch.com/api/v1/' + tenant + '/theme/publish_status',
           method: 'GET'
-        }, function(error, response, body) {
+        }, function (error, response, body) {
           if (error) {
             console.log('Unhandled error polling publish status', error);
             return;
@@ -72,11 +72,11 @@ module.exports = function(program) {
       };
 
       // Recursively watched
-      var watchStatusLog = function(sinceTime) {
+      var watchStatusLog = function (sinceTime) {
         var thisLoopLatest = null;
         var lastMsg = '';
 
-        getStatus(function(logItem) {
+        getStatus(function (logItem) {
           if (logItem.timestamp > sinceTime) {
             lastMsg        = logItem.message;
             thisLoopLatest = logItem.timestamp;
@@ -87,7 +87,7 @@ module.exports = function(program) {
               console.log(logItem.message);
             }
           }
-        }, function() {
+        }, function () {
           if (lastMsg === magicConstants.completedMsg) {
             return; // Quit with success
           } else if (lastMsg.indexOf(magicConstants.errorMsgPrefix) === 0) {
@@ -96,23 +96,23 @@ module.exports = function(program) {
             var newSinceTime = thisLoopLatest ? thisLoopLatest : sinceTime;
 
             // NOTE -- This is recursion
-            setTimeout(function(){ watchStatusLog(newSinceTime); }, magicConstants.pollingInterval);
+            setTimeout(function () { watchStatusLog(newSinceTime); }, magicConstants.pollingInterval);
           }
         });
       };
 
       var previousDeployTime = 0;
 
-      getStatus(function(logItem) {
+      getStatus(function (logItem) {
         if (logItem.timestamp > previousDeployTime) {
           previousDeployTime = logItem.timestamp;
         }
-      }, function() {
+      }, function () {
         request({
           uri: 'https://' + auth + 'app.referralsaasquatch.com/api/v1/' + tenant + '/theme/publish',
           method: 'POST',
           json: {}
-        }, function(error, response) {
+        }, function (error, response) {
           if (error) {
             console.log('Unhandled error publishing theme', error);
             return;
