@@ -3,11 +3,15 @@
 var
   fs = require('fs'),
 
-  extend   = require('extend'),
-  defaults = require('json-schema-defaults'),
-  chalk    = require('chalk'),
-  chokidar = require('chokidar'),
-  open     = require('open'),
+  extend     = require('extend'),
+  defaults   = require('json-schema-defaults'),
+  chalk      = require('chalk'),
+  chokidar   = require('chokidar'),
+  open       = require('open'),
+  equal      = require('deep-equal'),
+  express    = require('express'),
+  cors       = require('cors'),
+  bodyParser = require('body-parser'),
 
   // TODO: Remove gulp dependencies (ex. include and use `less` instead of `gulp-less`, remove `gulp`, etc)
   gulp       = require('gulp'),
@@ -26,6 +30,7 @@ var
   js,
   hbs,
   server,
+  apiServer,
   watch,
   openUrl,
   alphaMessage,
@@ -116,6 +121,50 @@ server = function (livereload) {
   });
 };
 
+apiServer = function () {
+  var configPath = './api.json';
+
+  if (!fs.existsSync(configPath)) { return false; }
+
+  var
+    app            = express(),
+    config         = JSON.parse(fs.readFileSync(configPath)),
+    customerConfig = readCustomerConfig(),
+    endpoint       = {};
+
+  app.use(cors());
+  app.use(bodyParser.json());
+
+  if (customerConfig.apiEndpoint) {
+    var hostAndPort = customerConfig.apiEndpoint.match(/https?:\/\/([^:/]+):([^/]+)/);
+    endpoint.host = hostAndPort[1];
+    endpoint.port = hostAndPort[2];
+  }
+
+  app.post('/', function (req, res) {
+    var response;
+
+    config.exchanges.forEach(function (exchange) {
+      if (equal(req.body, exchange.request)) {
+        response = exchange.response;
+      }
+    });
+
+    res.send(response || config.defaultResponse);
+  });
+
+  // TODO: Add live reloading
+  app.listen(
+    endpoint.port || 8090,
+    endpoint.host || '0.0.0.0',
+    function () {
+      var host = server.address().address;
+      var port = server.address().port;
+      console.log('API listening at http://%s:%s', host, port);
+    }
+  );
+};
+
 openUrl = function () {
   var host = process.env.IP || '0.0.0.0';
   var port = process.env.PORT || '8080';
@@ -145,6 +194,7 @@ command = function (program) {
     .action(function (options) {
       alphaMessage();
       server(options.livereload);
+      apiServer();
       hbs();
       css();
       watch();

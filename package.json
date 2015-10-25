@@ -14,9 +14,12 @@
     "test": "jshint ."
   },
   "dependencies": {
+    "body-parser": "^1.14.1",
     "chalk": "^1.1.1",
     "chokidar": "^1.2.0",
     "commander": "^2.9.0",
+    "cors": "^2.7.1",
+    "deep-equal": "^1.0.1",
     "express": "^4.13.3",
     "extend": "^3.0.0",
     "gulp": "^3.9.0",
