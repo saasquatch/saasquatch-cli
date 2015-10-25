@@ -17,7 +17,7 @@ serveCommand(program);
 program
   .command('*')
   .description('Prints help')
-  .action(function() {
+  .action(function () {
     console.error(chalk.red('\n  Invalid command. Please use one of the following:'));
     program.outputHelp();
   });

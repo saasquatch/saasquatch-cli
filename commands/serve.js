@@ -34,7 +34,7 @@ var
 
 cwd = process.cwd();
 
-readCustomerConfig = function() {
+readCustomerConfig = function () {
   var path = './customer.json';
 
   if (!fs.existsSync(path)) {
@@ -45,16 +45,16 @@ readCustomerConfig = function() {
   return JSON.parse(fs.readFileSync(path, 'utf-8'));
 };
 
-html = function() {
+html = function () {
   gulp.src('*.html')
     .pipe(connect.reload());
 };
 
-css = function() {
+css = function () {
   gulp.src('assets/css/widget.less')
     .pipe(
       less()
-    ).on('error', function(err) {
+    ).on('error', function (err) {
       console.log(chalk.red(err.message));
       this.emit('end');
     })
@@ -62,12 +62,12 @@ css = function() {
     .pipe(connect.reload());
 };
 
-js = function(path) {
+js = function (path) {
   gulp.src(path)
     .pipe(connect.reload());
 };
 
-hbs = function() {
+hbs = function () {
   var
     messagesPath,
     templateData,
@@ -100,14 +100,14 @@ hbs = function() {
     .pipe(gulp.dest(''));
 };
 
-watch = function() {
+watch = function () {
   chokidar.watch('*.html').on('change', html);
   chokidar.watch('assets/css/**/*.less').on('change', css);
   chokidar.watch('assets/javascript/**/*.js').on('change', js);
   chokidar.watch(['*.json', 'templates/**/*.hbs']).on('change', hbs);
 };
 
-server = function(livereload) {
+server = function (livereload) {
   connect.server({
     root: process.cwd(),
     livereload: livereload,
@@ -116,22 +116,22 @@ server = function(livereload) {
   });
 };
 
-openUrl = function() {
+openUrl = function () {
   var host = process.env.IP || '0.0.0.0';
   var port = process.env.PORT || '8080';
   open('http://' + host + ':' + port);
 };
 
-alphaMessage = function() {
+alphaMessage = function () {
   console.log(chalk.yellow('The serve command is alpha and is not a perfect replica of the live environment.\nMore details: https://github.com/saasquatch/saasquatch-cli/#why-is-this-alpha'));
 };
 
-command = function(program) {
+command = function (program) {
   var serve;
 
   serve = program.command('serve');
 
-  var toBoolean = function(string){
+  var toBoolean = function (string){
   	switch(string.toLowerCase()){
   		case 'true': case 'yes': case '1': return true;
   		case 'false': case 'no': case '0': return false;
@@ -142,7 +142,7 @@ command = function(program) {
   serve
     .description('[alpha] Start a server for a theme')
     .option('--livereload [livereload]', 'Enable the LiveReload plugin. Default to true', toBoolean, true)
-    .action(function(options) {
+    .action(function (options) {
       alphaMessage();
       server(options.livereload);
       hbs();
