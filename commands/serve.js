@@ -80,7 +80,7 @@ hbs = function () {
     messages,
     options;
 
-  messagesPath     = './variables.json';
+  messagesPath = './variables.json';
 
   templateData = readCustomerConfig();
 
@@ -154,7 +154,7 @@ apiServer = function () {
   });
 
   // TODO: Add live reloading
-  app.listen(
+  var server = app.listen(
     endpoint.port || 8090,
     endpoint.host || '0.0.0.0',
     function () {
