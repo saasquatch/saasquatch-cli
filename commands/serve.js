@@ -36,7 +36,6 @@ var
   alphaMessage,
   command;
 
-
 cwd = process.cwd();
 
 readCustomerConfig = function () {
