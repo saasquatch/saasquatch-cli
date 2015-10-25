@@ -20,7 +20,7 @@ var
 
 var
   cwd,
-
+  readCustomerConfig,
   html,
   css,
   js,
@@ -29,12 +29,21 @@ var
   watch,
   openUrl,
   alphaMessage,
-
   command;
 
 
 cwd = process.cwd();
 
+readCustomerConfig = function() {
+  var path = './customer.json';
+
+  if (!fs.existsSync(path)) {
+    console.log(chalk.red('customer.json not found in current directory!'));
+    process.exit(1);
+  }
+
+  return JSON.parse(fs.readFileSync(path, 'utf-8'));
+};
 
 html = function() {
   gulp.src('*.html')
@@ -60,17 +69,15 @@ js = function(path) {
 
 hbs = function() {
   var
-    templateDataPath,
     messagesPath,
     templateData,
     messagesSchema,
     messages,
     options;
 
-  templateDataPath = './customer.json';
   messagesPath     = './variables.json';
 
-  templateData = JSON.parse(fs.readFileSync('./customer.json', 'utf-8'));
+  templateData = readCustomerConfig();
 
   if (fs.existsSync(messagesPath)) {
     messagesSchema = JSON.parse(fs.readFileSync(messagesPath));
