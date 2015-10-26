@@ -146,6 +146,10 @@ apiServer = function () {
     config.exchanges.forEach(function (exchange) {
       if (equal(req.body, exchange.request)) {
         response = exchange.response;
+
+        if (exchange.status) {
+          res.status(exchange.status);
+        }
       }
     });
 

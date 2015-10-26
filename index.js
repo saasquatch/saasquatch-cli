@@ -9,7 +9,7 @@ var
   serveCommand   = require('./commands/serve');
 
 program
-  .version('1.3.0');
+  .version('1.3.1');
 
 publishCommand(program);
 serveCommand(program);
