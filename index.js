@@ -5,9 +5,10 @@ var program = require('commander');
 var chalk   = require('chalk');
 
 var publishCommand = require('./commands/publish');
+var version = require('./package.json').version;
 
 program
-  .version('1.4.0');
+  .version(version);
 
 publishCommand(program);
 
