@@ -14,25 +14,9 @@
     "test": "jshint ."
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
     "chalk": "^1.1.1",
-    "chokidar": "^1.2.0",
     "commander": "^2.9.0",
-    "cors": "^2.7.1",
-    "deep-equal": "^1.0.1",
-    "express": "^4.13.3",
-    "extend": "^3.0.0",
-    "gulp": "^3.9.0",
-    "gulp-compile-handlebars": "^0.5.0",
-    "gulp-connect": "^2.2.0",
-    "gulp-less": "^3.0.3",
-    "gulp-rename": "^1.2.2",
-    "handlebars": "^4.0.3",
-    "json-schema-defaults": "^0.1.1",
-    "mathjs": "^2.4.0",
-    "open": "0.0.5",
-    "request": "^2.65.0",
-    "sprintf-js": "^1.0.3"
+    "request": "^2.65.0"
   },
   "devDependencies": {
     "jshint": "^2.8.0"

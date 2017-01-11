@@ -1,8 +1,7 @@
 'use strict';
 
-var
-  chalk   = require('chalk'),
-  request = require('request');
+var chalk   = require('chalk');
+var request = require('request');
 
 module.exports = function (program) {
   var publish;

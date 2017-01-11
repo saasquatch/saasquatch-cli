@@ -1,18 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 
-var
-  program = require('commander'),
-  chalk   = require('chalk'),
+var program = require('commander');
+var chalk   = require('chalk');
 
-  publishCommand = require('./commands/publish'),
-  serveCommand   = require('./commands/serve');
+var publishCommand = require('./commands/publish');
 
 program
-  .version('1.3.3');
+  .version('1.4.0');
 
 publishCommand(program);
-serveCommand(program);
 
 program
   .command('*')
