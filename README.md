@@ -39,35 +39,6 @@ $ squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 -k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
 ```
 
-### squatch serve
-
-:exclamation: **alpha**
-
-Start local static and API servers, with Handlebars and LESS compilation and LiveReload.
-
-```bash
-$ squatch serve
-[10:28:54] Server started http://0.0.0.0:8080
-[10:28:54] LiveReload started on port 35729
-API listening at http://0.0.0.0:8090
-```
-
-#### Configuring the API Server
-
-Create an api.json in your theme directory with request / response pairs (exchanges) defined. Also add the `apiEndpoint` key to your customer.json.
-
-[Example](https://gist.github.com/karlhorky/3cbbbf0b07a9f5ebde16)
-
-#### Why is this alpha?
-
-The serve command uses Handlebars.js, contrasting with the Handlebars.java library used in Referral SaaSquatch.
-
-This means that the serve command will allow you to do things that Handlebars.js supports, but that are not supported in Handlebars.java.
-
-Please see the [Handlebars.java documentation](https://github.com/jknack/handlebars.java) for an overview of the supported features.
-
-For an example of a theme written to support Handlebars.java, please see our [Time Credit Theme](https://github.com/saasquatch/time-credit-theme).
-
 ## License
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
