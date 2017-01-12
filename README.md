@@ -1,6 +1,7 @@
 saasquatch-cli
 ==============
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6df4a79bc613438c800260ef90666cdd)](https://www.codacy.com/app/torbensky/saasquatch-cli?utm_source=github.com&utm_medium=referral&utm_content=saasquatch/saasquatch-cli&utm_campaign=badger)
 [![npm version](https://badge.fury.io/js/saasquatch-cli.svg)](http://badge.fury.io/js/saasquatch-cli)
 [![Build Status](https://travis-ci.org/saasquatch/saasquatch-cli.svg?branch=master)](https://travis-ci.org/saasquatch/saasquatch-cli)
 
