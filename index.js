@@ -6,11 +6,15 @@ var chalk   = require('chalk');
 
 var publishCommand = require('./commands/publish');
 var version = require('./package.json').version;
+var uploadCommand = require('./commands/upload');
+var downloadCommand = require('./commands/download');
 
 program
   .version(version);
 
 publishCommand(program);
+uploadCommand(program);
+downloadCommand(program);
 
 program
   .command('*')
