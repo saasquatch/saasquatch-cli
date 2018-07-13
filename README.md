@@ -44,7 +44,8 @@ $ squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 Upload translations for TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.
 
 ```bash
-$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets -i 5b3e91cbe4b04b486fc9e474 -p ProgramWidgetConfig
+$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w 
+-k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets -i 5b3e91cbe4b04b486fc9e474 -p ProgramWidgetConfig
 ```
 
 **Options**
@@ -99,7 +100,8 @@ Translation files must be put in folders with structure as below:
 Download translations 
 
 ```bash
-$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets
+$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w 
+-k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets
 ```
 
 **Options**
