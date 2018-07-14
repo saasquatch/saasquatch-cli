@@ -38,13 +38,29 @@ $ squatch publish -t test_alu125hh1si9w -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs
 -t, --tenant [tenant]  required - which tenant to use
 -k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
 ```
+### squatch download
+Download translations
+
+```bash
+$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w
+-k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets
+```
+
+**Options**
+
+```
+-d, --domainname [domainname] required - server domain
+-t, --tenant [tenant]  required - which tenant to use
+-k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
+-f, --filepath [filepath] required - path where downloaded files to be saved
+```
 
 ### squatch upload
 
 Upload translations for TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.
 
 ```bash
-$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w 
+$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w
 -k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets -i 5b3e91cbe4b04b486fc9e474 -p ProgramWidgetConfig
 ```
 
@@ -71,6 +87,8 @@ Translation files must be put in folders with structure as below:
             - [translation json file]
 ```
 
+** Do a `squatch download` will get structured folders ready for upload.
+
 #### Example
 ```
 /assets
@@ -96,22 +114,7 @@ Translation files must be put in folders with structure as below:
         - fr_FR.json
 ```
 
-### squatch download
-Download translations 
 
-```bash
-$ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w 
--k TEST_BHASKh5125Las5hL125oh3VbLmPxUSs -f ./assets
-```
-
-**Options**
-
-```
--d, --domainname [domainname] required - server domain
--t, --tenant [tenant]  required - which tenant to use
--k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
--f, --filepath [filepath] required - path where downloaded files to be saved
-```
 
 ## License
 

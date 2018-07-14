@@ -19,28 +19,28 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {
     __schema: {
       types: [{
-        "kind": "INTERFACE",
-        "name": "TranslatableAsset",
-        "possibleTypes": [{
-          "name": "ProgramEmailConfig"
+        'kind': 'INTERFACE',
+        'name': 'TranslatableAsset',
+        'possibleTypes': [{
+          'name': 'ProgramEmailConfig'
         }, {
-          "name": "ProgramWidgetConfig"
+          'name': 'ProgramWidgetConfig'
         }, {
-          "name": "TenantTheme"
+          'name': 'TenantTheme'
         }]
       }, {
-        "kind": "INTERFACE",
-        "name": "IsPredefinedReward",
-        "possibleTypes": [{
-          "name": "ProgramRewardConfig"
+        'kind': 'INTERFACE',
+        'name': 'IsPredefinedReward',
+        'possibleTypes': [{
+          'name': 'ProgramRewardConfig'
         }]
       }, {
-        "kind": "INTERFACE",
-        "name": "ProgramTrigger",
-        "possibleTypes": [{
-          "name": "AfterUserCreatedOrUpdatedTrigger"
+        'kind': 'INTERFACE',
+        'name': 'ProgramTrigger',
+        'possibleTypes': [{
+          'name': 'AfterUserCreatedOrUpdatedTrigger'
         }, {
-          "name": "ScheduledProgramTrigger"
+          'name': 'ScheduledProgramTrigger'
         }]
       }]
     }

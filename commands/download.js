@@ -1,18 +1,20 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 // @ts-check
 
-const { h, render, Component, Color } = require("ink");
-const { List, ListItem } = require("./components/checkbox-list");
-const TextInput = require("ink-text-input");
-const Spinner = require("ink-spinner");
-const readline = require("readline");
-const fs = require("fs");
-const path = require("path");
-const Query = require("./query/query");
-const base64 = require("base-64");
-const mkdirp = require("mkdirp");
-const util = require("util");
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+const { h, render, Component, Color } = require('ink');
+const { List, ListItem } = require('./components/checkbox-list');
+const TextInput = require('ink-text-input');
+const Spinner = require('ink-spinner');
+const readline = require('readline');
+const fs = require('fs');
+const path = require('path');
+const Query = require('./query/query');
+const base64 = require('base-64');
+const mkdirp = require('mkdirp');
+const util = require('util');
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -52,11 +54,11 @@ class DownloadAssets extends Component {
 
       assets.data.translatableAssets.forEach(asset => {
         const typename = asset.__typename;
-        if (typename === "TenantTheme") {
+        if (typename === 'TenantTheme') {
           this.setState({
             tenantThemeData: asset
           });
-          listItem.push("TenantTheme");
+          listItem.push('TenantTheme');
         }
       });
     } catch (e) {
@@ -80,7 +82,7 @@ class DownloadAssets extends Component {
     });
 
     if (listItem.length === 0) {
-      console.log("\nNo available translatable asset found.");
+      console.log('\nNo available translatable asset found.');
       process.exit();
     }
 
@@ -146,11 +148,11 @@ class ListFile extends Component {
 
   render() {
     return h(
-      "div",
+      'div',
       null,
-      h("br", null),
-      "Use arrow keys to move between options. Use space to select and enter to submit.",
-      h("br", null),
+      h('br', null),
+      'Use arrow keys to move between options. Use space to select and enter to submit.',
+      h('br', null),
       h(
         List,
         { onSubmit: list => this.props.onListSubmitted(list) },
@@ -227,7 +229,7 @@ class Downloading extends Component {
       }
     });
     return h(
-      "span",
+      'span',
       null,
       downloadList
     );
@@ -247,14 +249,14 @@ class DownloadEachFile extends Component {
     const { domainname, tenant, auth } = this.props.options;
     let programData = null;
 
-    if (this.props.name === "TenantTheme") {
-      const path = this.props.dir + "/TenantTheme";
+    if (this.props.name === 'TenantTheme') {
+      const path = this.props.dir + '/TenantTheme';
       mkdirp.sync(path);
       //write default - in root asset folder
       await this.writeFile({
         data: JSON.stringify(this.props.tenantThemeData.variables),
         dir: this.props.dir,
-        name: "TenantTheme"
+        name: 'TenantTheme'
       });
       //write translations - in 'TenantTheme' folder
       const translations = this.props.tenantThemeData.translationInfo.translations;
@@ -281,22 +283,22 @@ class DownloadEachFile extends Component {
         console.error(e);
         process.exit(1);
       }
-      const programRootPath = this.props.dir + "/" + this.props.name;
+      const programRootPath = this.props.dir + '/' + this.props.name;
       mkdirp.sync(programRootPath);
       //put default in root folder of each program
       const assets = programData.translatableAssets;
       for (var i = 0; i < assets.length; i++) {
         const assetData = assets[i];
-        const path = programRootPath + "/" + assetData.__typename;
+        const path = programRootPath + '/' + assetData.__typename;
         mkdirp.sync(path);
         //write default
-        if (assetData.__typename === "ProgramLinkConfig") {
+        if (assetData.__typename === 'ProgramLinkConfig') {
           await this.writeFile({
             data: JSON.stringify(assetData.messaging),
             dir: path,
-            name: "default"
+            name: 'default'
           });
-          const transPath = path + "/default";
+          const transPath = path + '/default';
           this.writeTranslation(transPath, assetData);
         } else {
           await this.writeFile({
@@ -305,7 +307,7 @@ class DownloadEachFile extends Component {
             name: assetData.key
           });
           //write translations
-          const transPath = path + "/" + assetData.key;
+          const transPath = path + '/' + assetData.key;
           await this.writeTranslation(transPath, assetData);
         }
       }
@@ -327,12 +329,12 @@ class DownloadEachFile extends Component {
 
   writeFile({ data, dir, name }) {
     const filePath = path.normalize(path.format({
-      root: "/ignored",
+      root: '/ignored',
       dir: dir,
       base: name
-    })) + ".json";
+    })) + '.json';
 
-    return fs_writeFile(filePath, data, { encoding: "utf8" });
+    return fs_writeFile(filePath, data, { encoding: 'utf8' });
   }
 
   componentDidMount() {
@@ -341,13 +343,13 @@ class DownloadEachFile extends Component {
 
   render() {
     return h(
-      "div",
+      'div',
       null,
-      " ",
+      ' ',
       h(Spinner, { green: true }),
-      "  Downloading ",
+      '  Downloading ',
       this.props.name,
-      " "
+      ' '
     );
   }
 }
@@ -359,34 +361,34 @@ class FinishCheckmark extends Component {
 
   render() {
     return h(
-      "div",
+      'div',
       null,
-      " ",
+      ' ',
       h(
         Color,
         { green: true },
-        "\u2714 "
+        '\u2714 '
       ),
-      " ",
+      ' ',
       this.props.name,
-      " translations downloaded",
-      " "
+      ' translations downloaded',
+      ' '
     );
   }
 }
 
 module.exports = program => {
-  let download = program.command("download");
+  let download = program.command('download');
 
-  download.description("download an translation").option("-d,--domainname <domainname>", "required - domain") //naming collision with domain, use domain name instead
-  .option("-k,--apiKey <apiKey>", "required - authToken") //the apiKey, use authToken to avoid naming collision
-  .option("-t,--tenant <tenant>", "required - which tenant").option("-f,--filepath <filepath>", "required - the file path").action(options => {
+  download.description('download an translation').option('-d,--domainname <domainname>', 'required - domain') //naming collision with domain, use domain name instead
+  .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey, use authToken to avoid naming collision
+  .option('-t,--tenant <tenant>', 'required - which tenant').option('-f,--filepath <filepath>', 'required - the file path').action(options => {
     if (!options.domainname || !options.apiKey || !options.tenant || !options.filepath) {
       console.log('Missing parameter');
       return;
     }
     const newOptions = _extends({
-      auth: base64.encode(":" + options.apiKey)
+      auth: base64.encode(':' + options.apiKey)
     }, options);
     render(h(DownloadAssets, { options: newOptions }));
   });
