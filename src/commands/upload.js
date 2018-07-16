@@ -1,7 +1,5 @@
 // @ts-check
 
-'use strict';
-
 import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import readline from 'readline';

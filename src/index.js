@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-'use strict';
-
 // Polyfill for Async/Await and other features in older Node versionss
 import "babel-polyfill";
 
