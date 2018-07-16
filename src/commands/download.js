@@ -253,7 +253,7 @@ class DownloadEachFile extends Component {
       //write translations - in 'TenantTheme' folder
       const translations = this.props.tenantThemeData.translationInfo
         .translations;
-      for (var i = 0; i < translations.length; i++) {
+      for (let i = 0; i < translations.length; i++) {
         await this.writeFile({
           data: JSON.stringify(translations[i].content),
           dir: path,
@@ -311,7 +311,7 @@ class DownloadEachFile extends Component {
    writeTranslation(transPath, assetData) {
     const translations = assetData.translationInfo.translations;
     mkdirp.sync(transPath);
-    for (var i = 0; i < translations.length; i++) {
+    for (let i = 0; i < translations.length; i++) {
         this.writeFile({
         data: JSON.stringify(translations[i].content),
         dir: transPath,

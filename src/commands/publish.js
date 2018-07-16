@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import request from 'request';
 
 export default function (program) {
-  var publish;
+  let publish;
 
   publish = program.command('publish');
 
@@ -13,9 +13,7 @@ export default function (program) {
     .option('-t, --tenant [tenant]', 'required - which tenant to use')
     .option('-k, --apiKey [apiKey]', 'required - which API key to use (for corresponding tenant)')
     .action(function (options) {
-      var
-        tenant = options.tenant,
-        apiKey = options.apiKey;
+      const tenant = options.tenant, apiKey = options.apiKey;
 
       // Validates inputs
       if (!options || !apiKey) {
@@ -24,7 +22,7 @@ export default function (program) {
         return;
       }
 
-      var magicConstants = {
+      const magicConstants = {
         completedMsg          : 'PUBLISH COMPLETED',
         errorMsgPrefix        : 'ERROR',
         themeStatusSuccessCode: 200,
@@ -35,11 +33,11 @@ export default function (program) {
       console.log('Publishing theme for %s with key %s', chalk.blue(tenant), chalk.blue(apiKey));
 
       // HTTP Basic Auth
-      var auth = apiKey + ':' + apiKey + '@';
+      const auth = apiKey + ':' + apiKey + '@';
 
       // Gets the theme status log, outputting each logItem to `cb`
       // TODO: Rewrite to promises instead of callbacks, use less callbacks
-      var getStatus = function (cb, doneCb) {
+      const getStatus = function (cb, doneCb) {
         request({
           uri: 'https://' + auth + 'app.referralsaasquatch.com/api/v1/' + tenant + '/theme/publish_status',
           method: 'GET'
@@ -54,10 +52,10 @@ export default function (program) {
             return;
           }
 
-          var data = JSON.parse(body);
+          const data = JSON.parse(body);
 
-          for (var line = data.log.length; line > 0; --line) {
-            var logItem = data.log[line];
+          for (let line = data.log.length; line > 0; --line) {
+            const logItem = data.log[line];
 
             if (logItem) {
               cb(logItem);
@@ -71,9 +69,9 @@ export default function (program) {
       };
 
       // Recursively watched
-      var watchStatusLog = function (sinceTime) {
-        var thisLoopLatest = null;
-        var lastMsg = '';
+      const watchStatusLog = function (sinceTime) {
+        let thisLoopLatest = null;
+        let lastMsg = '';
 
         getStatus(function (logItem) {
           if (logItem.timestamp > sinceTime) {
@@ -92,7 +90,7 @@ export default function (program) {
           } else if (lastMsg.indexOf(magicConstants.errorMsgPrefix) === 0) {
             return; // Quit with Error
           } else {
-            var newSinceTime = thisLoopLatest ? thisLoopLatest : sinceTime;
+            const newSinceTime = thisLoopLatest ? thisLoopLatest : sinceTime;
 
             // NOTE -- This is recursion
             setTimeout(function () { watchStatusLog(newSinceTime); }, magicConstants.pollingInterval);
@@ -100,7 +98,7 @@ export default function (program) {
         });
       };
 
-      var previousDeployTime = 0;
+      let previousDeployTime = 0;
 
       getStatus(function (logItem) {
         if (logItem.timestamp > previousDeployTime) {
