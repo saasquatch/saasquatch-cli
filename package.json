@@ -16,7 +16,8 @@
   },
   "babel": {
     "presets": [
-      "babel-preset-env"
+      ["babel-preset-env",
+      { "targets": { "node": "current" }}]
     ],
     "plugins": [
       [
@@ -26,7 +27,8 @@
           "useBuiltIns": true
         }
       ],
-      "babel-plugin-transform-es2015-modules-commonjs"
+      "babel-plugin-transform-es2015-modules-commonjs",
+      "transform-object-rest-spread"
     ]
   },
   "dependencies": {
@@ -42,9 +44,7 @@
     "graphql": "^0.11.7",
     "graphql-tag": "^2.6.1",
     "ink": "^0.5.0",
-    "ink-password-input": "^2.0.0",
     "ink-spinner": "^2.0.0",
-    "ink-text-input": "^2.0.0",
     "locale-code": "^2.0.1",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.1.2",

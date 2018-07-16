@@ -2,32 +2,32 @@
 
 const { ApolloClient } = require('apollo-client');
 const { HttpLink } = require('apollo-link-http');
-const { InMemoryCache } = require('apollo-cache-inmemory');
+const { InMemoryCache} = require('apollo-cache-inmemory');
 const gql = require('graphql-tag');
 const fetch = require('node-fetch');
 const fragmentMatcher = require('./fragmentMatcher');
+
 
 const Query = ({
   domain,
   tenant,
   authToken
-}) => {
-  return {
+}) => { return {
     getClient() {
       const uri = domain + '/api/v1/' + tenant + '/graphql';
       const headers = {
-        Authorization: 'Basic ' + authToken //base64
-      };
+        Authorization: 'Basic '+ authToken //base64
+      }
       const client = new ApolloClient({
         link: new HttpLink({ uri, headers, fetch }),
-        cache: new InMemoryCache({ fragmentMatcher })
+        cache: new InMemoryCache({fragmentMatcher})
       });
-      return client;
+      return client;      
     },
 
     uploadAssets(translationInstanceInput) {
       return this.getClient().mutate({
-        mutation: gql`
+        mutation: gql `
           mutation ($translationInstanceInput: TranslationInstanceInput!) {
             upsertTranslationInstance(translationInstanceInput:$translationInstanceInput) {
               id
@@ -35,13 +35,13 @@ const Query = ({
           }
          `, variables: {
           translationInstanceInput
-        }
-      });
+         }
+      })
     },
 
     listPrograms() {
       return this.getClient().query({
-        query: gql`
+        query: gql `
           query {
             programs {
               data {
@@ -101,13 +101,13 @@ const Query = ({
           }
         }`, variables: {
           programId
-        }
+         }
       });
     },
 
     getAssets() {
       return this.getClient().query({
-        query: gql`
+        query: gql `
           query {
             translatableAssets {
               __typename
@@ -142,9 +142,11 @@ const Query = ({
             }
           }
           `
-      });
+      })
     }
-  };
-};
+  }
+}
 
 module.exports = Query;
+
+

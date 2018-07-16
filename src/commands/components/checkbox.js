@@ -1,8 +1,10 @@
-const { h, Color } = require('ink');
+const {h, Color} = require('ink');
 
-function CheckBox({ checkedCharacter, uncheckedCharacter, isChecked }) {
+function CheckBox({checkedCharacter, uncheckedCharacter, isChecked}) {
 	const mark = isChecked === true ? checkedCharacter : uncheckedCharacter;
-	return <Color green={true}> {mark}  </Color>
+	return (
+		<Color green>{` ${mark}  `}</Color>
+	);
 }
 
 module.exports = CheckBox;
