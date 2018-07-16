@@ -18,32 +18,45 @@ __schema {
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {
     __schema: {
-      types: [{
-        'kind': 'INTERFACE',
-        'name': 'TranslatableAsset',
-        'possibleTypes': [{
-          'name': 'ProgramEmailConfig'
-        }, {
-          'name': 'ProgramWidgetConfig'
-        }, {
-          'name': 'TenantTheme'
-        }]
-      }, {
-        'kind': 'INTERFACE',
-        'name': 'IsPredefinedReward',
-        'possibleTypes': [{
-          'name': 'ProgramRewardConfig'
-        }]
-      }, {
-        'kind': 'INTERFACE',
-        'name': 'ProgramTrigger',
-        'possibleTypes': [{
-          'name': 'AfterUserCreatedOrUpdatedTrigger'
-        }, {
-          'name': 'ScheduledProgramTrigger'
-        }]
-      }]
-    }
+      types: [
+        {
+            'kind': 'INTERFACE',
+            'name': 'TranslatableAsset',
+            'possibleTypes': [
+              {
+                'name': 'ProgramEmailConfig'
+              },
+              {
+                'name': 'ProgramWidgetConfig'
+              },
+              {
+                'name': 'TenantTheme'
+              }
+            ]
+        },
+        {
+            'kind': 'INTERFACE',
+            'name': 'IsPredefinedReward',
+            'possibleTypes': [
+              {
+                'name': 'ProgramRewardConfig'
+              }
+            ]
+        },
+        {
+            'kind': 'INTERFACE',
+            'name': 'ProgramTrigger',
+            'possibleTypes': [
+              {
+                'name': 'AfterUserCreatedOrUpdatedTrigger'
+              },
+              {
+                'name': 'ScheduledProgramTrigger'
+              }
+            ]
+        }, // this is an example, put your INTERFACE and UNION kinds here!
+      ],
+    },
   }
 });
 

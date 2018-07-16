@@ -2,21 +2,23 @@
 
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-const { h, render, Component, Color } = require('ink');
-const Spinner = require('ink-spinner');
-const readline = require('readline');
-const fs = require('fs');
-const path = require('path');
-const Query = require('./query/query');
-const base64 = require('base-64');
-const glob = require('glob');
-const LocaleCode = require('locale-code');
+import { h, render, Component, Color } from 'ink';
+import Spinner from 'ink-spinner';
+import readline from 'readline';
+import fs from 'fs';
+import Query from './query/query';
+import base64 from 'base-64';
+import glob from 'glob';
+import LocaleCode from 'locale-code';
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
-const currentValidTypes = ['TenantTheme', 'ProgramEmailConfig', 'ProgramWidgetConfig', 'ProgramLinkConfig'];
+const currentValidTypes = [
+  'TenantTheme',
+  'ProgramEmailConfig',
+  'ProgramWidgetConfig',
+  'ProgramLinkConfig'
+];
 
 class UploadAssets extends Component {
   constructor(props) {
@@ -59,7 +61,9 @@ class UploadAssets extends Component {
       keys.push('default');
     } else {
       if (programId === undefined) {
-        console.log('Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig');
+        console.log(
+          'Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig'
+        );
         process.exit();
       }
 
@@ -72,7 +76,9 @@ class UploadAssets extends Component {
         if (receivedData.data.program) {
           assets = receivedData.data.program.translatableAssets;
         } else {
-          console.log('Program with id ' + programId + ' not found in current tenant.');
+          console.log(
+            'Program with id ' + programId + ' not found in current tenant.'
+          );
           process.exit(0);
         }
       } catch (e) {
@@ -103,19 +109,23 @@ class UploadAssets extends Component {
 
   render() {
     if (this.state.filelist.length > 0) {
-      return h(UploadingFiles, {
-        handleUploadAllDone: this.handleUploadAllDone,
-        filelist: this.state.filelist,
-        options: this.props.options
-      });
+      return (
+        <UploadingFiles
+          handleUploadAllDone={this.handleUploadAllDone}
+          filelist={this.state.filelist}
+          options={this.props.options}
+        />
+      );
     } else {
       //in the process of reading file
       if (this.state.validKeys.length > 0) {
-        return h(ReadingFile, {
-          options: this.props.options,
-          validKeys: this.state.validKeys,
-          setFileList: this.setFileList
-        });
+        return (
+          <ReadingFile
+            options={this.props.options}
+            validKeys={this.state.validKeys}
+            setFileList={this.setFileList}
+          />
+        );
       }
     }
   }
@@ -154,18 +164,11 @@ class Checkmark extends Component {
   }
 
   render() {
-    return h(
-      'div',
-      null,
-      ' ',
-      h(
-        Color,
-        { green: true },
-        ' \u2714 '
-      ),
-      ' Uploaded ',
-      this.props.name,
-      ' '
+    return (
+      <div>
+        {' '}
+        <Color green> ✔ </Color> Uploaded {this.props.name}{' '}
+      </div>
     );
   }
 }
@@ -176,8 +179,8 @@ class ReadingFile extends Component {
     super(props);
 
     this.state = {
-      noFile: false
-    };
+        noFile:false
+    }
   }
 
   //put valid keys into a pattern string for directory traversal and validation
@@ -196,7 +199,10 @@ class ReadingFile extends Component {
       if (!validateLocale(name[name.length - 1])) {
         console.log(filename + ' : invalid locale code');
       }
-      return validKeys.includes(name[name.length - 2]) && validateLocale(name[name.length - 1]);
+      return (
+        validKeys.includes(name[name.length - 2]) &&
+        validateLocale(name[name.length - 1])
+      );
     });
   }
 
@@ -205,7 +211,8 @@ class ReadingFile extends Component {
     const validKeyPattern = this.getValidKeyPattern(validKeys);
     let pattern = null;
     if (fs.lstatSync(this.props.options.filepath).isDirectory()) {
-      pattern = this.props.options.filepath + '/**/' + validKeyPattern + '/*.json';
+      pattern =
+        this.props.options.filepath + '/**/' + validKeyPattern + '/*.json';
     } else {
       pattern = this.props.options.filepath;
     }
@@ -216,26 +223,23 @@ class ReadingFile extends Component {
       }
       const validfiles = this.getValidFilelist(files, validKeys);
       if (validfiles.length === 0) {
-        this.setState({ noFile: true });
+          this.setState({noFile:true});
       }
       this.props.setFileList(validfiles);
     });
   }
 
   render() {
-    if (this.state.noFile) {
-      return;
-    } else {
-      return;
-      h(
-        'div',
-        null,
-        ' ',
-        h(Spinner, { green: true }),
-        ' Reading',
-        ' '
-      );
-    }
+      if(this.state.noFile) {
+          return;
+      } else {
+    return 
+      (<div>
+        {' '}
+        <Spinner green /> Reading{' '}
+      </div>
+    );
+}
   }
 }
 
@@ -285,32 +289,23 @@ class UploadingFiles extends Component {
   render() {
     const uploadComponentList = this.props.filelist.map(path => {
       if (this.state.eachFileDone[path]) {
-        return h(
-          'div',
-          null,
-          ' ',
-          h(
-            Color,
-            { green: true },
-            ' \u2714 '
-          ),
-          ' Uploaded ',
-          path,
-          ' '
+        return (
+          <div>
+            {' '}
+            <Color green> ✔ </Color> Uploaded {path}{' '}
+          </div>
         );
       } else {
-        return h(UploadingEachFile, {
-          path: path,
-          options: this.props.options,
-          handleSingleUploadDone: this.handleSingleUploadDone
-        });
+        return (
+          <UploadingEachFile
+            path={path}
+            options={this.props.options}
+            handleSingleUploadDone={this.handleSingleUploadDone}
+          />
+        );
       }
     });
-    return h(
-      'div',
-      null,
-      uploadComponentList
-    );
+    return <div>{uploadComponentList}</div>;
   }
 }
 
@@ -392,15 +387,11 @@ class UploadingEachFile extends Component {
   }
 
   render() {
-    return h(
-      'div',
-      null,
-      '  ',
-      h(Spinner, { green: true }),
-      '  ',
-      ' Uploading ',
-      this.props.path,
-      ' '
+    return (
+      <div>
+        {'  '}
+        <Spinner green />{'  '} Uploading {this.props.path}{' '}
+      </div>
     );
   }
 }
@@ -408,26 +399,50 @@ class UploadingEachFile extends Component {
 module.exports = program => {
   let upload = program.command('upload');
 
-  upload.description('upload translations').option('-d,--domainname <domainname>', 'required - domain') //naming collision with domain, use domainname instead
-  .option('-k,--apiKey  <apiKey>', 'required - authToken').option('-t,--tenant <tenant>', 'required - which tenant').option('-f,--filepath <filepath>', 'required - the file path').option('-p, --typename <typename>', 'required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig').option('-i, --programId [programId]', 'optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig').action(options => {
-    if (!options.domainname || !options.apiKey || !options.tenant || !options.filepath || !options.typename) {
-      console.log('Missing parameter');
-      return;
-    }
+  upload
+    .description('upload translations')
+    .option('-d,--domainname <domainname>', 'required - domain') //naming collision with domain, use domainname instead
+    .option('-k,--apiKey  <apiKey>', 'required - authToken')
+    .option('-t,--tenant <tenant>', 'required - which tenant')
+    .option('-f,--filepath <filepath>', 'required - the file path')
+    .option(
+      '-p, --typename <typename>',
+      'required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
+    )
+    .option(
+      '-i, --programId [programId]',
+      'optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
+    )
+    .action(options => {
+      if (
+        !options.domainname ||
+        !options.apiKey ||
+        !options.tenant ||
+        !options.filepath ||
+        !options.typename
+      ) {
+        console.log('Missing parameter');
+        return;
+      }
 
-    if (!currentValidTypes.includes(options.typename)) {
-      console.log('Invalid typename, must be one of TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.');
-      process.exit();
-    }
-    if (options.typename !== 'TenantTheme' && !options.programId) {
-      console.log('Program Id required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.');
-      return;
-    }
-    const newOptions = _extends({
-      auth: base64.encode(':' + options.apiKey)
-    }, options);
-    render(h(UploadAssets, { options: newOptions }));
-  });
+      if (!currentValidTypes.includes(options.typename)) {
+        console.log(
+          'Invalid typename, must be one of TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.'
+        );
+        process.exit();
+      }
+      if (options.typename !== 'TenantTheme' && !options.programId) {
+        console.log(
+          'Program Id required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.'
+        );
+        return;
+      }
+      const newOptions = {
+        auth: base64.encode(':' + options.apiKey),
+        ...options
+      };
+      render(<UploadAssets options={newOptions} />);
+    });
 
   return upload;
 };

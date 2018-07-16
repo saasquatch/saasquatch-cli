@@ -1,4 +1,4 @@
-const { h, Component } = require('ink');
+const {h, Component} = require('ink');
 const figures = require('figures');
 const PropTypes = require('prop-types');
 const CheckBox = require('./checkbox');
@@ -21,7 +21,7 @@ class List extends Component {
 	}
 
 	get childValues() {
-		const { children } = this.props;
+		const {children} = this.props;
 		const filteredChildren = children.filter((_, i) => this.state.checked.includes(i));
 		return filteredChildren.map(child => child.props.value);
 	}
@@ -35,39 +35,39 @@ class List extends Component {
 	}
 
 	moveUp() {
-		const { cursor } = this.state;
-		const { length } = this.props.children;
+		const {cursor} = this.state;
+		const {length} = this.props.children;
 		if (cursor - 1 < 0) {
-			this.setState({ cursor: length - 1 });
+			this.setState({cursor: length - 1});
 			return;
 		}
-		this.setState({ cursor: cursor - 1 });
+		this.setState({cursor: cursor - 1});
 	}
 
 	moveDown() {
-		const { cursor } = this.state;
-		const { length } = this.props.children;
+		const {cursor} = this.state;
+		const {length} = this.props.children;
 		if (cursor + 1 >= length) {
-			this.setState({ cursor: 0 });
+			this.setState({cursor: 0});
 			return;
 		}
-		this.setState({ cursor: cursor + 1 });
+		this.setState({cursor: cursor + 1});
 	}
 
 	toggleCurrentCursor() {
-		const { checked, cursor } = this.state;
+		const {checked, cursor} = this.state;
 		if (checked.includes(cursor)) {
 			const i = checked.indexOf(cursor);
 			checked.splice(i, 1);
-			this.setState({ checked });
+			this.setState({checked});
 		} else {
 			checked.push(this.state.cursor);
-			this.setState({ checked });
+			this.setState({checked});
 		}
 	}
 
 	submit() {
-		this.setState({ cursor: -1 });
+		this.setState({cursor: -1});
 		stdin.removeListener('keypress', this.handleKeyPress);
 		if (this.props.onSubmit) {
 			this.props.onSubmit(this.childValues);
@@ -77,57 +77,54 @@ class List extends Component {
 	handleKeyPress(ch, key) {
 		const pressedKey = key.name;
 		switch (pressedKey) {
-			case 'up':
-				{
-					this.moveUp();
-					break;
+			case 'up': {
+				this.moveUp();
+				break;
+			}
+			case 'down': {
+				this.moveDown();
+				break;
+			}
+			case 'space': {
+				this.toggleCurrentCursor();
+				if (this.props.onChange) {
+					this.props.onChange(this.childValues);
 				}
-			case 'down':
-				{
-					this.moveDown();
-					break;
-				}
-			case 'space':
-				{
-					this.toggleCurrentCursor();
-					if (this.props.onChange) {
-						this.props.onChange(this.childValues);
-					}
-					break;
-				}
-			case 'return':
-				{
-					this.submit();
-					break;
-				}
-			default:
-				{
-					// Do nothing
-					break;
-				}
+				break;
+			}
+			case 'return': {
+				this.submit();
+				break;
+			}
+			default: {
+				// Do nothing
+				break;
+			}
 		}
 	}
 
 	render(props) {
-		const { cursor } = this.state;
-		const { cursorCharacter, checkedCharacter, uncheckedCharacter } = props;
-		return h(
-			'span',
-			null,
-			props.children.map((co, i) => h(
-				'span',
-				null,
-				h(Cursor, {
-					isActive: cursor === i,
-					cursorCharacter: cursorCharacter
-				}),
-				h(CheckBox, {
-					isChecked: this.state.checked.includes(i),
-					checkedCharacter: checkedCharacter,
-					uncheckedCharacter: uncheckedCharacter
-				}),
-				co
-			))
+		const {cursor} = this.state;
+		const {cursorCharacter, checkedCharacter, uncheckedCharacter} = props;
+		return (
+			<span>
+				{
+					props.children.map((co, i) => (
+						<span>
+							<Cursor
+								isActive={cursor === i}
+								cursorCharacter={cursorCharacter}
+							/>
+							<CheckBox
+								isChecked={this.state.checked.includes(i)}
+								checkedCharacter={checkedCharacter}
+								uncheckedCharacter={uncheckedCharacter}
+							/>
+							{co}
+						</span>
+					))
+				}
+			</span>
 		);
 	}
 }

@@ -2,19 +2,16 @@
 
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-const { h, render, Component, Color } = require('ink');
-const { List, ListItem } = require('./components/checkbox-list');
-const TextInput = require('ink-text-input');
-const Spinner = require('ink-spinner');
-const readline = require('readline');
-const fs = require('fs');
-const path = require('path');
-const Query = require('./query/query');
-const base64 = require('base-64');
-const mkdirp = require('mkdirp');
-const util = require('util');
+import { h, render, Component, Color } from 'ink';
+import { List, ListItem } from './components/checkbox-list';
+import Spinner from 'ink-spinner';
+import readline from 'readline';
+import fs from 'fs';
+import path from 'path';
+import Query from './query/query';
+import base64 from 'base-64';
+import mkdirp from 'mkdirp';
+import util from 'util';
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -61,7 +58,7 @@ class DownloadAssets extends Component {
           listItem.push('TenantTheme');
         }
       });
-    } catch (e) {
+    } catch (e) { 
       console.error(e);
     }
 
@@ -81,7 +78,7 @@ class DownloadAssets extends Component {
       progMap[programName] = program.id;
     });
 
-    if (listItem.length === 0) {
+    if(listItem.length === 0) {
       console.log('\nNo available translatable asset found.');
       process.exit();
     }
@@ -104,14 +101,14 @@ class DownloadAssets extends Component {
   }
 
   handleListSubmission(list) {
-    if (list.length > 0) {
-      this.setState({
-        selectedItem: list,
-        submitted: true
-      });
-    } else {
-      process.exit();
-    }
+    if(list.length > 0) {
+    this.setState({
+      selectedItem: list,
+      submitted: true 
+    }); 
+  } else  {
+    process.exit();
+  }
   }
 
   handleAllDone() {
@@ -122,20 +119,24 @@ class DownloadAssets extends Component {
 
   render() {
     if (this.state.submitted) {
-      return h(Downloading, {
-        selectedItem: this.state.selectedItem,
-        programList: this.state.programList,
-        programMap: this.state.programMap,
-        tenantThemeData: this.state.tenantThemeData,
-        handleAllDone: this.handleAllDone,
-        options: this.props.options
-      });
+      return (
+        <Downloading
+          selectedItem={this.state.selectedItem}
+          programList={this.state.programList}
+          programMap={this.state.programMap}
+          tenantThemeData={this.state.tenantThemeData}
+          handleAllDone={this.handleAllDone}
+          options={this.props.options}
+        />
+      );
     } else {
       if (this.state.itemList) {
-        return h(ListFile, {
-          itemList: this.state.itemList,
-          onListSubmitted: this.handleListSubmission
-        });
+        return (
+          <ListFile
+            itemList={this.state.itemList}
+            onListSubmitted={this.handleListSubmission}
+          />
+        );
       }
     }
   }
@@ -147,21 +148,14 @@ class ListFile extends Component {
   }
 
   render() {
-    return h(
-      'div',
-      null,
-      h('br', null),
-      'Use arrow keys to move between options. Use space to select and enter to submit.',
-      h('br', null),
-      h(
-        List,
-        { onSubmit: list => this.props.onListSubmitted(list) },
-        this.props.itemList.map(l => h(
-          ListItem,
-          { value: l },
-          l
-        ))
-      )
+    return (
+      <div>
+        <br></br>  
+          Use arrow keys to move between options. Use space to select and enter to submit.<br></br>  
+        <List onSubmit={list => this.props.onListSubmitted(list)}>  
+          {this.props.itemList.map(l => <ListItem value={l}>{l}</ListItem>)}
+        </List> 
+      </div>
     );
   }
 }
@@ -216,23 +210,21 @@ class Downloading extends Component {
   render() {
     const downloadList = this.props.selectedItem.map(item => {
       if (this.state.eachFileDone[item]) {
-        return h(FinishCheckmark, { name: item });
+        return <FinishCheckmark name={item} />;
       } else {
-        return h(DownloadEachFile, {
-          dir: this.dir,
-          name: item,
-          programMap: this.props.programMap,
-          tenantThemeData: this.props.tenantThemeData,
-          handleDownloadDone: this.handleDownloadDone,
-          options: this.props.options
-        });
+        return (
+          <DownloadEachFile
+            dir={this.dir}
+            name={item}
+            programMap={this.props.programMap}
+            tenantThemeData={this.props.tenantThemeData}
+            handleDownloadDone={this.handleDownloadDone}
+            options={this.props.options}
+          />
+        );
       }
     });
-    return h(
-      'span',
-      null,
-      downloadList
-    );
+    return <span>{downloadList}</span>;
   }
 }
 
@@ -259,7 +251,8 @@ class DownloadEachFile extends Component {
         name: 'TenantTheme'
       });
       //write translations - in 'TenantTheme' folder
-      const translations = this.props.tenantThemeData.translationInfo.translations;
+      const translations = this.props.tenantThemeData.translationInfo
+        .translations;
       for (var i = 0; i < translations.length; i++) {
         await this.writeFile({
           data: JSON.stringify(translations[i].content),
@@ -310,16 +303,16 @@ class DownloadEachFile extends Component {
           const transPath = path + '/' + assetData.key;
           await this.writeTranslation(transPath, assetData);
         }
-      }
     }
+  }
     this.props.handleDownloadDone(this.props.name);
   }
 
-  writeTranslation(transPath, assetData) {
+   writeTranslation(transPath, assetData) {
     const translations = assetData.translationInfo.translations;
     mkdirp.sync(transPath);
     for (var i = 0; i < translations.length; i++) {
-      this.writeFile({
+        this.writeFile({
         data: JSON.stringify(translations[i].content),
         dir: transPath,
         name: translations[i].locale
@@ -328,11 +321,14 @@ class DownloadEachFile extends Component {
   }
 
   writeFile({ data, dir, name }) {
-    const filePath = path.normalize(path.format({
-      root: '/ignored',
-      dir: dir,
-      base: name
-    })) + '.json';
+    const filePath =
+      path.normalize(
+        path.format({
+          root: '/ignored',
+          dir: dir,
+          base: name
+        })
+      ) + '.json';
 
     return fs_writeFile(filePath, data, { encoding: 'utf8' });
   }
@@ -342,14 +338,11 @@ class DownloadEachFile extends Component {
   }
 
   render() {
-    return h(
-      'div',
-      null,
-      ' ',
-      h(Spinner, { green: true }),
-      '  Downloading ',
-      this.props.name,
-      ' '
+    return (
+      <div>
+        {' '}
+        <Spinner green />  Downloading {this.props.name}{' '}
+      </div>
     );
   }
 }
@@ -360,19 +353,10 @@ class FinishCheckmark extends Component {
   }
 
   render() {
-    return h(
-      'div',
-      null,
-      ' ',
-      h(
-        Color,
-        { green: true },
-        '\u2714 '
-      ),
-      ' ',
-      this.props.name,
-      ' translations downloaded',
-      ' '
+    return (
+      <div>{' '}
+        <Color green>✔ </Color> {this.props.name} translations downloaded
+        {' '}</div>
     );
   }
 }
@@ -380,18 +364,23 @@ class FinishCheckmark extends Component {
 module.exports = program => {
   let download = program.command('download');
 
-  download.description('download an translation').option('-d,--domainname <domainname>', 'required - domain') //naming collision with domain, use domain name instead
-  .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey, use authToken to avoid naming collision
-  .option('-t,--tenant <tenant>', 'required - which tenant').option('-f,--filepath <filepath>', 'required - the file path').action(options => {
-    if (!options.domainname || !options.apiKey || !options.tenant || !options.filepath) {
-      console.log('Missing parameter');
-      return;
+  download
+    .description('download an translation')
+    .option('-d,--domainname <domainname>', 'required - domain') //naming collision with domain, use domain name instead
+    .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey, use authToken to avoid naming collision
+    .option('-t,--tenant <tenant>', 'required - which tenant')
+    .option('-f,--filepath <filepath>', 'required - the file path')
+    .action(options => {
+      if (!options.domainname || !options.apiKey || !options.tenant || !options.filepath) {
+        console.log('Missing parameter');
+        return;
     }
-    const newOptions = _extends({
-      auth: base64.encode(':' + options.apiKey)
-    }, options);
-    render(h(DownloadAssets, { options: newOptions }));
-  });
+      const newOptions = {
+        auth: base64.encode(':' + options.apiKey),
+        ...options
+      };
+      render(<DownloadAssets options={newOptions} />);
+    });
 
   return download;
 };
