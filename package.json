@@ -11,10 +11,10 @@
     "squatch": "./dist/index.js"
   },
   "scripts": {
+    "format": "prettier \"src/**/*.js\" --write",
     "build": "babel src --out-dir dist",
-    "format:": "prettier src/**/*.js --write",
     "prepush": "npm run format",
-    "test": "jshint ."
+    "test": "echo \"No tests yet!\""
   },
   "babel": {
     "presets": [
