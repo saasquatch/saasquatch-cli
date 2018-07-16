@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 'use strict';
 
-var program = require('commander');
-var chalk   = require('chalk');
+// Polyfill for Async/Await and other features in older Node versionss
+import "babel-polyfill";
 
-var publishCommand = require('./commands/publish');
-var version = require('./package.json').version;
-var uploadCommand = require('./commands/upload');
-var downloadCommand = require('./commands/download');
+import program from 'commander';
+import chalk from 'chalk';
+
+import publishCommand from './commands/publish';
+
+import {version} from '../package.json';
+import uploadCommand from './commands/upload';
+import downloadCommand from './commands/download';
 
 program
   .version(version);
