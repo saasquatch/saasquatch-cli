@@ -151,7 +151,7 @@ class ListFile extends Component {
         <br></br>  
           Use arrow keys to move between options. Use space to select and enter to submit.<br></br>  
         <List onSubmit={list => this.props.onListSubmitted(list)}>  
-          {this.props.itemList.map(l => <ListItem value={l}>{l}</ListItem>)}
+          {this.props.itemList.map(l => <ListItem>{l}</ListItem>)}
         </List> 
       </div>
     );
