@@ -1,52 +1,51 @@
-import {ApolloClient} from 'apollo-client';
-import {HttpLink} from 'apollo-link-http';
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import gql from 'graphql-tag';
-import fetch from 'node-fetch';
-import fragmentMatcher from './fragmentMatcher';
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import gql from "graphql-tag";
+import fetch from "node-fetch";
+import fragmentMatcher from "./fragmentMatcher";
 
-
-const Query = ({
-  domain,
-  tenant,
-  authToken
-}) => { return {
+const Query = ({ domain, tenant, authToken }) => {
+  return {
     getClient() {
-      const uri = domain + '/api/v1/' + tenant + '/graphql';
+      const uri = domain + "/api/v1/" + tenant + "/graphql";
       const headers = {
-        Authorization: 'Basic '+ authToken //base64
-      }
+        Authorization: "Basic " + authToken //base64
+      };
       const client = new ApolloClient({
         link: new HttpLink({ uri, headers, fetch }),
-        cache: new InMemoryCache({fragmentMatcher})
+        cache: new InMemoryCache({ fragmentMatcher })
       });
-      return client;      
+      return client;
     },
 
     uploadAssets(translationInstanceInput) {
       return this.getClient().mutate({
-        mutation: gql `
-          mutation ($translationInstanceInput: TranslationInstanceInput!) {
-            upsertTranslationInstance(translationInstanceInput:$translationInstanceInput) {
+        mutation: gql`
+          mutation($translationInstanceInput: TranslationInstanceInput!) {
+            upsertTranslationInstance(
+              translationInstanceInput: $translationInstanceInput
+            ) {
               id
             }
           }
-         `, variables: {
+        `,
+        variables: {
           translationInstanceInput
-         }
-      })
+        }
+      });
     },
 
     listPrograms() {
       return this.getClient().query({
-        query: gql `
+        query: gql`
           query {
             programs {
               data {
                 name
                 id
               }
-            } 
+            }
           }
         `
       });
@@ -56,7 +55,7 @@ const Query = ({
       return this.getClient().query({
         query: gql`
           query($programId: ID!) {
-            program(id: $programId){
+            program(id: $programId) {
               name
               translatableAssets {
                 translationInfo {
@@ -74,77 +73,77 @@ const Query = ({
                 ... on ProgramWidgetConfig {
                   key
                   values
-              }
+                }
                 ... on ProgramLinkConfig {
-                messaging {
-                  messages{
-                    shareMedium
-                    config
-                  }
-                  messengerLinkOpenGraph{
-                    title
-                    description
-                    image
-                    source
-                  }
-                  shareLinkOpenGraph{
-                    title
-                    description
-                    image
-                    source
+                  messaging {
+                    messages {
+                      shareMedium
+                      config
+                    }
+                    messengerLinkOpenGraph {
+                      title
+                      description
+                      image
+                      source
+                    }
+                    shareLinkOpenGraph {
+                      title
+                      description
+                      image
+                      source
+                    }
                   }
                 }
               }
             }
           }
-        }`, variables: {
+        `,
+        variables: {
           programId
-         }
+        }
       });
     },
 
     getAssets() {
       return this.getClient().query({
-        query: gql `
+        query: gql`
           query {
             translatableAssets {
               __typename
               translationInfo {
                 id
                 translatableAssetKey
-                translations{
+                translations {
                   id
                   locale
                   content
                 }
               }
-              ...on TenantTheme {
+              ... on TenantTheme {
                 id
                 variables
               }
-              ...on ProgramEmailConfig {
+              ... on ProgramEmailConfig {
                 key
                 values
               }
-              ...on ProgramLinkConfig {
-                messaging{
+              ... on ProgramLinkConfig {
+                messaging {
                   messages {
                     shareMedium
                   }
                 }
               }
-              ...on ProgramWidgetConfig {
+              ... on ProgramWidgetConfig {
                 key
                 values
               }
             }
           }
-          `
-      })
+        `
+      });
     }
-  }
-}
+  };
+};
 
 export default Query;
-
-

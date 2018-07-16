@@ -1,12 +1,11 @@
-import {h} from 'ink';
+import { h } from "ink";
 
-function Cursor({cursorCharacter, isActive}) {
-	const c = isActive === true ?
-		`${cursorCharacter} ` :
-		'\u00A0'.repeat(cursorCharacter.length + 1);
-	return (
-		<span>{c}</span>
-	);
+function Cursor({ cursorCharacter, isActive }) {
+  const c =
+    isActive === true
+      ? `${cursorCharacter} `
+      : "\u00A0".repeat(cursorCharacter.length + 1);
+  return <span>{c}</span>;
 }
 
 export default Cursor;
