@@ -12,6 +12,8 @@
   },
   "scripts": {
     "build": "babel src --out-dir dist",
+    "format:": "prettier src/**/*.js --write",
+    "prepush": "npm run format",
     "test": "jshint ."
   },
   "babel": {
@@ -58,6 +60,7 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "husky": "^0.14.3",
-    "jshint": "^2.8.0"
+    "jshint": "^2.8.0",
+    "prettier": "^1.13.7"
   }
 }
