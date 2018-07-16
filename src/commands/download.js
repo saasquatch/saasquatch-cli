@@ -1,7 +1,5 @@
 // @ts-check
 
-'use strict';
-
 import { h, render, Component, Color } from 'ink';
 import { List, ListItem } from './components/checkbox-list';
 import Spinner from 'ink-spinner';

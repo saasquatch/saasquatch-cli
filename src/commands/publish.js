@@ -1,5 +1,3 @@
-'use strict';
-
 import chalk from 'chalk';
 import request from 'request';
 
@@ -127,4 +125,4 @@ export default function (program) {
     });
 
   return publish;
-};
+}
