@@ -1,11 +1,11 @@
 'use strict';
 
-const { ApolloClient } = require('apollo-client');
-const { HttpLink } = require('apollo-link-http');
-const { InMemoryCache} = require('apollo-cache-inmemory');
-const gql = require('graphql-tag');
-const fetch = require('node-fetch');
-const fragmentMatcher = require('./fragmentMatcher');
+import {ApolloClient} from 'apollo-client';
+import {HttpLink} from 'apollo-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import gql from 'graphql-tag';
+import fetch from 'node-fetch';
+import fragmentMatcher from './fragmentMatcher';
 
 
 const Query = ({
@@ -147,6 +147,6 @@ const Query = ({
   }
 }
 
-module.exports = Query;
+export default Query;
 
 

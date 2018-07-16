@@ -1,4 +1,4 @@
-const {h} = require('ink');
+import {h} from 'ink';
 
 function Cursor({cursorCharacter, isActive}) {
 	const c = isActive === true ?
@@ -9,4 +9,4 @@ function Cursor({cursorCharacter, isActive}) {
 	);
 }
 
-module.exports = Cursor;
+export default Cursor;

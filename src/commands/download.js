@@ -361,7 +361,7 @@ class FinishCheckmark extends Component {
   }
 }
 
-module.exports = program => {
+export default program => {
   let download = program.command('download');
 
   download
