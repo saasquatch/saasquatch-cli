@@ -1,9 +1,9 @@
 'use strict';
 
-var chalk   = require('chalk');
-var request = require('request');
+import chalk from 'chalk';
+import request from 'request';
 
-module.exports = function (program) {
+export default function (program) {
   var publish;
 
   publish = program.command('publish');

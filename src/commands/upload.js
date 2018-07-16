@@ -396,7 +396,7 @@ class UploadingEachFile extends Component {
   }
 }
 
-module.exports = program => {
+export default program => {
   let upload = program.command('upload');
 
   upload

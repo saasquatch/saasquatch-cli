@@ -1,8 +1,8 @@
-const {h, Component} = require('ink');
-const figures = require('figures');
-const PropTypes = require('prop-types');
-const CheckBox = require('./checkbox');
-const Cursor = require('./cursor');
+import {h, Component} from 'ink';
+import figures from 'figures';
+import PropTypes from 'prop-types';
+import CheckBox from './checkbox';
+import Cursor from './cursor';
 
 const stdin = process.stdin;
 
@@ -143,4 +143,4 @@ List.propTypes = {
 	onSubmit: PropTypes.func
 };
 
-module.exports = List;
+export default List;

@@ -1,5 +1,5 @@
-const {h} = require('ink');
-const {string} = require('prop-types');
+import {h} from 'ink';
+import {string} from 'prop-types';
 
 /* eslint no-unused-vars: [0] */
 function ListItem({value, children}) {
@@ -14,4 +14,4 @@ ListItem.propTypes = {
 	value: string.isRequired
 };
 
-module.exports = ListItem;
+export default ListItem;
