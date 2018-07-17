@@ -10,16 +10,27 @@
   "bin": {
     "squatch": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "format": "prettier \"src/**/*.js\" --write",
     "build": "babel src --out-dir dist",
+    "release": "np --no-cleanup --no-yarn",
+    "version": "npm run build",
+    "format": "prettier \"src/**/*.js\" --write",
     "prepush": "npm run format",
     "test": "echo \"No tests yet!\""
   },
   "babel": {
     "presets": [
-      ["babel-preset-env",
-      { "targets": { "node": "current" }}]
+      [
+        "babel-preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
     ],
     "plugins": [
       [
@@ -60,7 +71,6 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "husky": "^0.14.3",
-    "jshint": "^2.8.0",
     "prettier": "^1.13.7"
   }
 }
