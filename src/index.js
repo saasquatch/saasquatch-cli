@@ -4,12 +4,17 @@ import "babel-polyfill";
 
 import program from "commander";
 import chalk from "chalk";
+import readline from "readline";
 
 import publishCommand from "./commands/publish";
 
 import { version } from "../package.json";
 import uploadCommand from "./commands/upload";
 import downloadCommand from "./commands/download";
+
+// Allows for interactive keyboard stuff with Ink
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
 
 program.version(version);
 

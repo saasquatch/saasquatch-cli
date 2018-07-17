@@ -1,19 +1,12 @@
 // @ts-check
 
 import { h, render, Component, Color } from "ink";
-import { List, ListItem } from "./components/checkbox-list";
 import Spinner from "ink-spinner";
-import readline from "readline";
-import fs from "fs";
-import path from "path";
-import Query from "./query/query";
 import base64 from "base-64";
-import mkdirp from "mkdirp";
-import util from "util";
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-const fs_writeFile = util.promisify(fs.writeFile);
+import { List, ListItem } from "./components/checkbox-list";
+import {findTranslatableAssets, downloadSingleAsset} from "./i18n";
+
 
 class DownloadAssets extends Component {
   constructor(props) {
@@ -34,58 +27,31 @@ class DownloadAssets extends Component {
   }
 
   async downloadData() {
-    let assets, programData;
-    let listItem = [];
-    let progMap = {};
-    let { domainname, tenant, auth } = this.props.options;
-
-    //get Tenant Theme
     try {
-      assets = await Query({
-        domain: domainname,
-        tenant: tenant,
-        authToken: auth
-      }).getAssets();
+      const {
+        tenantThemeData,
+        programMap,
+        programData,
+        listItem
+      } = await findTranslatableAssets(this.props.options);
 
-      assets.data.translatableAssets.forEach(asset => {
-        const typename = asset.__typename;
-        if (typename === "TenantTheme") {
-          this.setState({
-            tenantThemeData: asset
-          });
-          listItem.push("TenantTheme");
-        }
+      if (listItem.length === 0) {
+        console.log("\nNo available translatable asset found.");
+        process.exit(1);
+        return;
+      }
+
+      this.setState({
+        tenantThemeData,
+        programMap,
+        programList: programData.data.programs,
+        itemList: listItem
       });
     } catch (e) {
       console.error(e);
+      process.exit(1);
+      return;
     }
-
-    try {
-      programData = await Query({
-        domain: domainname,
-        tenant: tenant,
-        authToken: auth
-      }).listPrograms();
-    } catch (e) {
-      console.error(e);
-    }
-
-    programData.data.programs.data.forEach(program => {
-      const programName = program.name.trim();
-      listItem.push(programName);
-      progMap[programName] = program.id;
-    });
-
-    if (listItem.length === 0) {
-      console.log("\nNo available translatable asset found.");
-      process.exit();
-    }
-
-    this.setState({
-      programList: programData.data.programs,
-      programMap: progMap,
-      itemList: listItem
-    });
   }
 
   componentWillMount() {
@@ -127,37 +93,35 @@ class DownloadAssets extends Component {
           options={this.props.options}
         />
       );
+    } else if (this.state.itemList) {
+      return (
+        <ListFile
+          itemList={this.state.itemList}
+          onListSubmitted={this.handleListSubmission}
+        />
+      );
     } else {
-      if (this.state.itemList) {
-        return (
-          <ListFile
-            itemList={this.state.itemList}
-            onListSubmitted={this.handleListSubmission}
-          />
-        );
-      }
+      return (
+        <div>
+          <Spinner green /> Generating list of translatable assets
+        </div>
+      );
     }
   }
 }
 
-class ListFile extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
-    return (
-      <div>
-        <br />
-        Use arrow keys to move between options. Use space to select and enter to
-        submit.<br />
-        <List onSubmit={list => this.props.onListSubmitted(list)}>
-          {this.props.itemList.map(l => <ListItem>{l}</ListItem>)}
-        </List>
-      </div>
-    );
-  }
-}
+
+const ListFile = props => (
+  <div>
+    <br />
+    Use arrow keys to move between options. Use space to select and enter to
+    submit.<br />
+    <List onSubmit={list => props.onListSubmitted(list)}>
+      {props.itemList.map(l => <ListItem value={l}>{l.name}</ListItem>)}
+    </List>
+  </div>
+);
 
 class Downloading extends Component {
   constructor(props) {
@@ -191,10 +155,13 @@ class Downloading extends Component {
   componentWillMount() {
     // set the list of download status track for each file
     this.dir = this.props.options.filepath;
-    let status = {};
-    this.props.selectedItem.map(item => {
-      status[item] = false;
-    });
+    const status = this.props.selectedItem.reduce(
+      (prev, item) => ({
+        ...prev,
+        [item]: false
+      }),
+      {}
+    );
     this.setState({
       eachFileDone: status
     });
@@ -237,99 +204,14 @@ class DownloadEachFile extends Component {
   }
 
   async download() {
-    const { domainname, tenant, auth } = this.props.options;
-    let programData = null;
-
-    if (this.props.name === "TenantTheme") {
-      const path = this.props.dir + "/TenantTheme";
-      mkdirp.sync(path);
-      //write default - in root asset folder
-      await this.writeFile({
-        data: JSON.stringify(this.props.tenantThemeData.variables),
-        dir: this.props.dir,
-        name: "TenantTheme"
-      });
-      //write translations - in 'TenantTheme' folder
-      const translations = this.props.tenantThemeData.translationInfo
-        .translations;
-      for (let i = 0; i < translations.length; i++) {
-        await this.writeFile({
-          data: JSON.stringify(translations[i].content),
-          dir: path,
-          name: translations[i].locale
-        });
-      }
-      //handle tenantTheme done
-      this.props.handleDownloadDone(this.props.name);
-    } else {
-      //per program
-      const programId = this.props.programMap[this.props.name];
-      try {
-        const receivedData = await Query({
-          domain: domainname,
-          tenant: tenant,
-          authToken: auth
-        }).getProgramData(programId);
-        programData = receivedData.data.program;
-      } catch (e) {
-        console.error(e);
-        process.exit(1);
-      }
-      const programRootPath = this.props.dir + "/" + this.props.name;
-      mkdirp.sync(programRootPath);
-      //put default in root folder of each program
-      const assets = programData.translatableAssets;
-      for (var i = 0; i < assets.length; i++) {
-        const assetData = assets[i];
-        const path = programRootPath + "/" + assetData.__typename;
-        mkdirp.sync(path);
-        //write default
-        if (assetData.__typename === "ProgramLinkConfig") {
-          await this.writeFile({
-            data: JSON.stringify(assetData.messaging),
-            dir: path,
-            name: "default"
-          });
-          const transPath = path + "/default";
-          this.writeTranslation(transPath, assetData);
-        } else {
-          await this.writeFile({
-            data: JSON.stringify(assetData.values),
-            dir: path,
-            name: assetData.key
-          });
-          //write translations
-          const transPath = path + "/" + assetData.key;
-          await this.writeTranslation(transPath, assetData);
-        }
-      }
+    try{
+      await downloadSingleAsset(this.props);
+    }catch(e){
+      // Hard bail out if any asset fails
+      console.error(e);
+      process.exit(1);
     }
-    this.props.handleDownloadDone(this.props.name);
-  }
-
-  writeTranslation(transPath, assetData) {
-    const translations = assetData.translationInfo.translations;
-    mkdirp.sync(transPath);
-    for (let i = 0; i < translations.length; i++) {
-      this.writeFile({
-        data: JSON.stringify(translations[i].content),
-        dir: transPath,
-        name: translations[i].locale
-      });
-    }
-  }
-
-  writeFile({ data, dir, name }) {
-    const filePath =
-      path.normalize(
-        path.format({
-          root: "/ignored",
-          dir: dir,
-          base: name
-        })
-      ) + ".json";
-
-    return fs_writeFile(filePath, data, { encoding: "utf8" });
+    this.props.handleDownloadDone(name);
   }
 
   componentDidMount() {
@@ -340,49 +222,47 @@ class DownloadEachFile extends Component {
     return (
       <div>
         {" "}
-        <Spinner green /> Downloading {this.props.name}{" "}
+        <Spinner green /> Downloading {this.props.name}...{" "}
       </div>
     );
   }
 }
 
-class FinishCheckmark extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        {" "}
-        <Color green>✔ </Color> {this.props.name} translations downloaded{" "}
-      </div>
-    );
-  }
-}
+const FinishCheckmark = ({ name }) => (
+  <div>
+    {" "}
+    {name} <Color green>✔ source downloaded </Color>
+  </div>
+);
 
 export default program => {
   let download = program.command("download");
 
   download
     .description("download an translation")
-    .option("-d,--domainname <domainname>", "required - domain") //naming collision with domain, use domain name instead
     .option("-k,--apiKey <apiKey>", "required - authToken") //the apiKey, use authToken to avoid naming collision
     .option("-t,--tenant <tenant>", "required - which tenant")
-    .option("-f,--filepath <filepath>", "required - the file path")
+    .option(
+      "-f,--filepath [filepath]",
+      "optional - the file path. Defaults to the current working directory."
+    )
+    .option(
+      "-d,--domainname [domainname]",
+      "optional - domain. May be useful if you're using a proxy."
+    ) //naming collision with domain, use domain name instead
     .action(options => {
       if (
-        !options.domainname ||
         !options.apiKey ||
-        !options.tenant ||
-        !options.filepath
+        !options.tenant
       ) {
         console.log("Missing parameter");
         return;
       }
       const newOptions = {
         auth: base64.encode(":" + options.apiKey),
-        ...options
+        ...options,
+        domainname: options.domainname || "https://app.referralsaasquatch.com",
+        filepath: options.filepath || process.cwd()
       };
       render(<DownloadAssets options={newOptions} />);
     });

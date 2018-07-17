@@ -2,15 +2,13 @@
 
 import { h, render, Component, Color } from "ink";
 import Spinner from "ink-spinner";
-import readline from "readline";
 import fs from "fs";
-import Query from "./query/query";
 import base64 from "base-64";
 import glob from "glob";
 import LocaleCode from "locale-code";
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
+import Query from "./query/query";
+
 const currentValidTypes = [
   "TenantTheme",
   "ProgramEmailConfig",
@@ -171,6 +169,29 @@ class Checkmark extends Component {
   }
 }
 
+//put valid keys into a pattern string for directory traversal and validation
+function getValidKeyPattern(validKeys) {
+  //valid key patterns
+  let pattern = "@(";
+  validKeys.forEach(key => {
+    pattern = pattern + key + "|";
+  });
+  return pattern.substring(0, pattern.length - 1) + ")";
+}
+
+function getValidFilelist(filelist, validKeys) {
+  return filelist.filter(filename => {
+    let name = filename.split("/");
+    if (!validateLocale(name[name.length - 1])) {
+      console.log(filename + " : invalid locale code");
+    }
+    return (
+      validKeys.includes(name[name.length - 2]) &&
+      validateLocale(name[name.length - 1])
+    );
+  });
+}
+
 //Validate and get a list of paths of all files to be uploaded
 class ReadingFile extends Component {
   constructor(props) {
@@ -180,46 +201,23 @@ class ReadingFile extends Component {
       noFile: false
     };
   }
-
-  //put valid keys into a pattern string for directory traversal and validation
-  getValidKeyPattern(validKeys) {
-    //valid key patterns
-    let pattern = "@(";
-    validKeys.forEach(key => {
-      pattern = pattern + key + "|";
-    });
-    return pattern.substring(0, pattern.length - 1) + ")";
-  }
-
-  getValidFilelist(filelist, validKeys) {
-    return filelist.filter(filename => {
-      let name = filename.split("/");
-      if (!validateLocale(name[name.length - 1])) {
-        console.log(filename + " : invalid locale code");
-      }
-      return (
-        validKeys.includes(name[name.length - 2]) &&
-        validateLocale(name[name.length - 1])
-      );
-    });
-  }
-
+  
   componentDidMount() {
-    const validKeys = this.props.validKeys;
-    const validKeyPattern = this.getValidKeyPattern(validKeys);
+    const {validKeys, options} = this.props;
+
+    const validKeyPattern = getValidKeyPattern(validKeys);
     let pattern = null;
-    if (fs.lstatSync(this.props.options.filepath).isDirectory()) {
-      pattern =
-        this.props.options.filepath + "/**/" + validKeyPattern + "/*.json";
+    if (fs.lstatSync(options.filepath).isDirectory()) {
+      pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
     } else {
-      pattern = this.props.options.filepath;
+      pattern = options.filepath;
     }
     glob(pattern, { mark: true }, (err, files) => {
       if (err) {
         console.error(err);
         process.exit();
       }
-      const validfiles = this.getValidFilelist(files, validKeys);
+      const validfiles = getValidFilelist(files, validKeys);
       if (validfiles.length === 0) {
         this.setState({ noFile: true });
       }
