@@ -214,14 +214,14 @@ export default program => {
 
   download
     .description("download an translation")
-    .option("-k,--apiKey <apiKey>", "required - authToken") //the apiKey, use authToken to avoid naming collision
+    .option("-k,--apiKey <apiKey>", "required - authToken") //the apiKey
     .option("-t,--tenant <tenant>", "required - which tenant")
     .option(
       "-f,--filepath [filepath]",
       "optional - the file path. Defaults to the current working directory."
     )
     .option(
-      "-d,--domainname [domainname]",
+      "-d,--domainname [domain]",
       "optional - domain. May be useful if you're using a proxy."
     ) //naming collision with domain, use domain name instead
     .action(options => {
@@ -233,7 +233,7 @@ export default program => {
         auth: base64.encode(":" + options.apiKey),
         ...options,
         domainname:
-          options.domainname || "https://staging.referralsaasquatch.com",
+        options.domainname || "https://staging.referralsaasquatch.com",
         filepath: options.filepath || process.cwd()
       };
       render(<DownloadAssets options={newOptions} />);

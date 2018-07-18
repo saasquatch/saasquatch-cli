@@ -18,6 +18,7 @@ class UploadAssets extends Component {
 
     this.state = {
       validFilelist: [],
+      loading: 'initial',
       allDone: false
     };
     this.handleUploadAllDone = this.handleUploadAllDone.bind(this);
@@ -29,15 +30,16 @@ class UploadAssets extends Component {
     });
   }
 
-  componentWillMount() {
+  async componentDidMount() {
     //get valid files for this tenant
-    const validFiles = getValidFilelist(this.props.options);
+    this.setState({ loading: 'true' });
+    const validFiles = await getValidFilelist(this.props.options);
     if (validFiles.length === 0) {
       console.log("\nNo valid translation file found.");
       process.exit();
     }
-    console.log(typeof validFiles);
     this.setState({
+      loading:'false',
       validFilelist: validFiles
     });
   }
@@ -49,15 +51,15 @@ class UploadAssets extends Component {
   }
 
   render() {
-    if (this.state.validfilelist.length > 0) {
+    if ( this.state.loading === 'false') {
       return (
         <UploadingFiles
           handleUploadAllDone={this.handleUploadAllDone}
-          filelist={this.state.filelist}
+          filelist={this.state.validFilelist}
           options={this.props.options}
         />
       );
-    } else {
+    } else if (this.state.loading === 'true') {
       //in the process of reading file
       return (<div> <Spinner green/> Searching for valid translation files... </div>);
     }
@@ -93,7 +95,7 @@ class UploadingFiles extends Component {
     }
   }
 
-  handleUploadDone(name) {
+  handleSingleUploadDone(name) {
     this.setState(prevState => {
       let status = prevState.eachFileDone;
       status[name] = true;
@@ -136,11 +138,13 @@ class UploadingEachFile extends Component {
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
     const {path, options} = this.props;
-    uploadFile({path, options});
+    const uploadDone = await uploadFile({path, options});
+    if(uploadDone) {
+      this.props.handleSingleUploadDone(path);
+    }
   }
-
   render() {
     return (
       <div>
