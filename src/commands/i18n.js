@@ -10,6 +10,7 @@ import glob from "glob";
 const fs_writeFile = util.promisify(fs.writeFile);
 const fs_readFile = util.promisify(fs.readFile);
 const fs_open = util.promisify(fs.open);
+const prom_glob = util.promisify(glob);
 
 export async function writingEachAsset({ dir, assetData }) {
   const { name, data } = assetData;
@@ -166,6 +167,8 @@ export async function uploadFile({ path, options }) {
     console.error(e);
     process.exit();
   }
+  console.log("upload done");
+  return true;
 }
 
 function standardizeLocale(filename) {
@@ -230,31 +233,21 @@ function getValidKeyPattern(validKeys) {
   return pattern.substring(0, pattern.length - 1) + ")";
 }
 
-export function getValidFilelist(options) {
-  let validKeys = [];
-  getValidKeys(options).then(res => {
-    validKeys = res;
-  });
-  console.log(validKeys);
-  const validKeyPattern = getValidKeyPattern(validKeys);
-  let pattern = null;
-  let validFiles = [];
-  if (fs.lstatSync(options.filepath).isDirectory()) {
-    pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
-  } else {
-    pattern = options.filepath;
-  }
-  
-  glob(pattern, { mark: true }, (err, files) => {
-    if (err) {
-      console.error(err);
-      process.exit();
-    }
-    validFiles = getValidFiles(files, validKeys);
-  });
-  return validFiles;
 
-}
+export async function getValidFilelist(options) {
+    const validKeys = await getValidKeys(options);
+    
+    const validKeyPattern = getValidKeyPattern(validKeys);
+    let pattern = null;
+    if (fs.lstatSync(options.filepath).isDirectory()) {
+      pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
+    } else {
+      pattern = options.filepath;
+    }
+    const allFiles = await prom_glob(pattern, {mark:true});
+    return getValidFiles(allFiles,validKeys);;
+  }
+
 
 function getValidFiles(files, validKeys) {
   return files.filter(filename => {
