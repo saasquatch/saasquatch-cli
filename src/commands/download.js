@@ -1,11 +1,11 @@
 // @ts-check
 
-import { h, render, Component, Color } from "ink";
-import Spinner from "ink-spinner";
-import base64 from "base-64";
+import { h, render, Component, Color } from 'ink';
+import Spinner from 'ink-spinner';
+import base64 from 'base-64';
 
-import { List, ListItem } from "./components/checkbox-list";
-import { getTranslatableAssets, writingEachAsset } from "./i18n";
+import { List, ListItem } from './components/checkbox-list';
+import { getTranslatableAssets, writingEachAsset } from './i18n';
 
 class DownloadAssets extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class DownloadAssets extends Component {
       const assetList = await getTranslatableAssets(this.props.options);
 
       if (assetList.length === 0) {
-        console.log("\nNo available translatable asset found.");
+        console.log('\nNo available translatable asset found.');
         process.exit();
         return;
       }
@@ -122,12 +122,14 @@ class Downloading extends Component {
     this.setState(prevState => {
       let status = prevState.eachFileDone;
       status[name] = true;
-      const allFileChecked = Object.keys(status).reduce((acc, cur) => acc&&status[cur]);
+      const allFileChecked = Object.keys(status).reduce(
+        (acc, cur) => acc && status[cur]
+      );
       return {
         eachFileDone: status,
         allDone: allFileChecked
       };
-  });
+    });
   }
 
   componentWillMount() {
@@ -195,8 +197,8 @@ class DownloadEachAsset extends Component {
   render() {
     return (
       <div>
-        {" "}
-        <Spinner green /> Downloading {this.props.assetData.name}...{" "}
+        {' '}
+        <Spinner green /> Downloading {this.props.assetData.name}...{' '}
       </div>
     );
   }
@@ -204,36 +206,35 @@ class DownloadEachAsset extends Component {
 
 const FinishCheckmark = ({ name }) => (
   <div>
-    {" "}
+    {' '}
     {name} <Color green>✔ source downloaded </Color>
   </div>
 );
 
 export default program => {
-  let download = program.command("download");
+  let download = program.command('downloadTranslations');
 
   download
-    .description("download an translation")
-    .option("-k,--apiKey <apiKey>", "required - authToken") //the apiKey
-    .option("-t,--tenant <tenant>", "required - which tenant")
+    .description('download an translation')
+    .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
+    .option('-t,--tenant <tenant>', 'required - which tenant')
     .option(
-      "-f,--filepath [filepath]",
-      "optional - the file path. Defaults to the current working directory."
+      '-f,--filepath [filepath]',
+      'optional - the file path. Defaults to the current working directory.'
     )
     .option(
-      "-d,--domainname [domain]",
-      "optional - domain. May be useful if you're using a proxy."
-    ) //naming collision with domain, use domain name instead
+      '-d,--_domain [_domain]',
+      'optional - domain. May be useful if you are using a proxy.'
+    ) //naming collision with domain, use _domain instead
     .action(options => {
       if (!options.apiKey || !options.tenant) {
-        console.log("Missing parameter");
+        console.log('Missing parameter');
         return;
       }
       const newOptions = {
-        auth: base64.encode(":" + options.apiKey),
+        auth: base64.encode(':' + options.apiKey),
         ...options,
-        domainname:
-        options.domainname || "https://staging.referralsaasquatch.com",
+        domain: options._domain || 'https://app.referralsaaasquatch.com',
         filepath: options.filepath || process.cwd()
       };
       render(<DownloadAssets options={newOptions} />);
