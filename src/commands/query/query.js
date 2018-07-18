@@ -36,22 +36,7 @@ const Query = ({ domain, tenant, authToken }) => {
       });
     },
 
-    listPrograms() {
-      return this.getClient().query({
-        query: gql`
-          query {
-            programs {
-              data {
-                name
-                id
-              }
-            }
-          }
-        `
-      });
-    },
-
-    getProgramData(programId) {
+    getSingleProgramData(programId) {
       return this.getClient().query({
         query: gql`
           query($programId: ID!) {
@@ -101,6 +86,62 @@ const Query = ({ domain, tenant, authToken }) => {
         variables: {
           programId
         }
+      });
+    },
+
+    listProgramAssetData() {
+      return this.getClient().query({
+        query: gql`
+          query {
+            programs {
+              data {
+                id
+                name
+                translatableAssets {
+                  translationInfo {
+                    translatableAssetKey
+                    translations {
+                      id
+                      locale
+                      translatableAssetKey
+                      content
+                    }
+                    locales
+                  }
+                  __typename
+                  ... on ProgramEmailConfig {
+                    key
+                    values
+                  }
+                  ... on ProgramWidgetConfig {
+                    key
+                    values
+                  }
+                  ... on ProgramLinkConfig {
+                    messaging {
+                      messages {
+                        shareMedium
+                        config
+                      }
+                      messengerLinkOpenGraph {
+                        title
+                        description
+                        image
+                        source
+                      }
+                      shareLinkOpenGraph {
+                        title
+                        description
+                        image
+                        source
+                      }
+                    }
+                  }
+                }
+              } 
+            }
+          }
+        `
       });
     },
 

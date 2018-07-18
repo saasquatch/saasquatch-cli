@@ -5,19 +5,15 @@ import Spinner from "ink-spinner";
 import base64 from "base-64";
 
 import { List, ListItem } from "./components/checkbox-list";
-import {findTranslatableAssets, downloadSingleAsset} from "./i18n";
-
+import { getTranslatableAssets, writingEachAsset } from "./i18n";
 
 class DownloadAssets extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tenantThemeData: null,
-      programList: null,
-      programMap: null,
-      itemList: null,
-      selectedItem: [],
+      assetList: null,
+      selectedAssetList: [],
       submitted: false,
       downloadDone: false
     };
@@ -28,28 +24,20 @@ class DownloadAssets extends Component {
 
   async downloadData() {
     try {
-      const {
-        tenantThemeData,
-        programMap,
-        programData,
-        listItem
-      } = await findTranslatableAssets(this.props.options);
+      const assetList = await getTranslatableAssets(this.props.options);
 
-      if (listItem.length === 0) {
+      if (assetList.length === 0) {
         console.log("\nNo available translatable asset found.");
-        process.exit(1);
+        process.exit();
         return;
       }
 
       this.setState({
-        tenantThemeData,
-        programMap,
-        programList: programData.data.programs,
-        itemList: listItem
+        assetList: assetList
       });
     } catch (e) {
       console.error(e);
-      process.exit(1);
+      process.exit();
       return;
     }
   }
@@ -67,7 +55,7 @@ class DownloadAssets extends Component {
   handleListSubmission(list) {
     if (list.length > 0) {
       this.setState({
-        selectedItem: list,
+        selectedAssetList: list,
         submitted: true
       });
     } else {
@@ -85,18 +73,15 @@ class DownloadAssets extends Component {
     if (this.state.submitted) {
       return (
         <Downloading
-          selectedItem={this.state.selectedItem}
-          programList={this.state.programList}
-          programMap={this.state.programMap}
-          tenantThemeData={this.state.tenantThemeData}
+          dir={this.props.options.filepath}
+          selectedAssetList={this.state.selectedAssetList}
           handleAllDone={this.handleAllDone}
-          options={this.props.options}
         />
       );
-    } else if (this.state.itemList) {
+    } else if (this.state.assetList) {
       return (
         <ListFile
-          itemList={this.state.itemList}
+          assetList={this.state.assetList}
           onListSubmitted={this.handleListSubmission}
         />
       );
@@ -110,15 +95,13 @@ class DownloadAssets extends Component {
   }
 }
 
-
-
 const ListFile = props => (
   <div>
     <br />
     Use arrow keys to move between options. Use space to select and enter to
     submit.<br />
     <List onSubmit={list => props.onListSubmitted(list)}>
-      {props.itemList.map(l => <ListItem value={l}>{l.name}</ListItem>)}
+      {props.assetList.map(l => <ListItem value={l}>{l.name}</ListItem>)}
     </List>
   </div>
 );
@@ -138,27 +121,21 @@ class Downloading extends Component {
   handleDownloadDone(name) {
     this.setState(prevState => {
       let status = prevState.eachFileDone;
-      if (status[name] !== undefined) {
-        status[name] = true;
-        let allFileChecked = true;
-        Object.keys(status).forEach(k => {
-          allFileChecked = allFileChecked && status[k];
-        });
-        return {
-          eachFileDone: status,
-          allDone: allFileChecked
-        };
-      }
-    });
+      status[name] = true;
+      const allFileChecked = Object.keys(status).reduce((acc, cur) => acc&&status[cur]);
+      return {
+        eachFileDone: status,
+        allDone: allFileChecked
+      };
+  });
   }
 
   componentWillMount() {
     // set the list of download status track for each file
-    this.dir = this.props.options.filepath;
-    const status = this.props.selectedItem.reduce(
+    const status = this.props.selectedAssetList.reduce(
       (prev, item) => ({
         ...prev,
-        [item]: false
+        [item.name]: false
       }),
       {}
     );
@@ -174,18 +151,15 @@ class Downloading extends Component {
   }
 
   render() {
-    const downloadList = this.props.selectedItem.map(item => {
-      if (this.state.eachFileDone[item]) {
-        return <FinishCheckmark name={item} />;
+    const downloadList = this.props.selectedAssetList.map(assetItem => {
+      if (this.state.eachFileDone[assetItem.name]) {
+        return <FinishCheckmark name={assetItem.name} />;
       } else {
         return (
-          <DownloadEachFile
-            dir={this.dir}
-            name={item}
-            programMap={this.props.programMap}
-            tenantThemeData={this.props.tenantThemeData}
+          <DownloadEachAsset
+            dir={this.props.dir}
+            assetData={assetItem}
             handleDownloadDone={this.handleDownloadDone}
-            options={this.props.options}
           />
         );
       }
@@ -194,7 +168,7 @@ class Downloading extends Component {
   }
 }
 
-class DownloadEachFile extends Component {
+class DownloadEachAsset extends Component {
   constructor(props) {
     super(props);
 
@@ -204,14 +178,14 @@ class DownloadEachFile extends Component {
   }
 
   async download() {
-    try{
-      await downloadSingleAsset(this.props);
-    }catch(e){
+    try {
+      await writingEachAsset(this.props);
+    } catch (e) {
       // Hard bail out if any asset fails
       console.error(e);
-      process.exit(1);
+      process.exit(0);
     }
-    this.props.handleDownloadDone(name);
+    this.props.handleDownloadDone(this.props.assetData.name);
   }
 
   componentDidMount() {
@@ -222,7 +196,7 @@ class DownloadEachFile extends Component {
     return (
       <div>
         {" "}
-        <Spinner green /> Downloading {this.props.name}...{" "}
+        <Spinner green /> Downloading {this.props.assetData.name}...{" "}
       </div>
     );
   }
@@ -251,17 +225,15 @@ export default program => {
       "optional - domain. May be useful if you're using a proxy."
     ) //naming collision with domain, use domain name instead
     .action(options => {
-      if (
-        !options.apiKey ||
-        !options.tenant
-      ) {
+      if (!options.apiKey || !options.tenant) {
         console.log("Missing parameter");
         return;
       }
       const newOptions = {
         auth: base64.encode(":" + options.apiKey),
         ...options,
-        domainname: options.domainname || "https://app.referralsaasquatch.com",
+        domainname:
+          options.domainname || "https://staging.referralsaasquatch.com",
         filepath: options.filepath || process.cwd()
       };
       render(<DownloadAssets options={newOptions} />);

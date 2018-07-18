@@ -1,3 +1,6 @@
+/**
+ * Based on ink-checkbox-list {@link https://github.com/MaxMEllon/ink-checkbox-list}
+ */
 import { h, Component } from "ink";
 import figures from "figures";
 import PropTypes from "prop-types";

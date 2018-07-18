@@ -1,3 +1,6 @@
+/**
+ * Based on ink-checkbox-list {@link https://github.com/MaxMEllon/ink-checkbox-list}
+ */
 import { h } from "ink";
 
 function Cursor({ cursorCharacter, isActive }) {
