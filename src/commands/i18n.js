@@ -68,11 +68,11 @@ export async function writingEachAsset({ dir, assetData }) {
   return true;
 }
 
-export async function getTranslatableAssets({ domainname, tenant, auth }) {
+export async function getTranslatableAssets({ domain, tenant, auth }) {
   let assetList = [];
 
   const graphql = Query({
-    domain: domainname,
+    domain: domain,
     tenant: tenant,
     authToken: auth
   });
@@ -127,9 +127,9 @@ function writeFile({ data, dir, name }) {
 }
 
 export async function uploadFile({ path, options }) {
-  let { domainname, tenant, auth, programId, typename } = options;
+  let { domain, tenant, auth, programId, typename } = options;
   const graphql = Query({
-    domain: domainname,
+    domain: domain,
     tenant: tenant,
     authToken: auth
   });
@@ -167,7 +167,6 @@ export async function uploadFile({ path, options }) {
     console.error(e);
     process.exit();
   }
-  console.log("upload done");
   return true;
 }
 
@@ -233,21 +232,19 @@ function getValidKeyPattern(validKeys) {
   return pattern.substring(0, pattern.length - 1) + ")";
 }
 
-
 export async function getValidFilelist(options) {
-    const validKeys = await getValidKeys(options);
-    
-    const validKeyPattern = getValidKeyPattern(validKeys);
-    let pattern = null;
-    if (fs.lstatSync(options.filepath).isDirectory()) {
-      pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
-    } else {
-      pattern = options.filepath;
-    }
-    const allFiles = await prom_glob(pattern, {mark:true});
-    return getValidFiles(allFiles,validKeys);;
-  }
+  const validKeys = await getValidKeys(options);
 
+  const validKeyPattern = getValidKeyPattern(validKeys);
+  let pattern = null;
+  if (fs.lstatSync(options.filepath).isDirectory()) {
+    pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
+  } else {
+    pattern = options.filepath;
+  }
+  const allFiles = await prom_glob(pattern, { mark: true });
+  return getValidFiles(allFiles, validKeys);
+}
 
 function getValidFiles(files, validKeys) {
   return files.filter(filename => {
@@ -263,7 +260,7 @@ function getValidFiles(files, validKeys) {
 }
 
 async function getValidKeys(options) {
-  let { domainname, tenant, auth, typename, programId } = options;
+  let { domain, tenant, auth, typename, programId } = options;
   let assets = null;
   let keys = [];
 
@@ -280,11 +277,11 @@ async function getValidKeys(options) {
     }
 
     const graphql = Query({
-      domain: domainname,
+      domain: domain,
       tenant: tenant,
       authToken: auth
     });
-   
+
     try {
       const receivedData = await graphql.getSingleProgramData(programId);
       if (receivedData.data.program) {

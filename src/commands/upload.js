@@ -1,15 +1,15 @@
 // @ts-check
 
-import { h, render, Component, Color } from "ink";
-import Spinner from "ink-spinner";
-import base64 from "base-64";
-import {getValidFilelist, uploadFile} from './i18n';
+import { h, render, Component, Color } from 'ink';
+import Spinner from 'ink-spinner';
+import base64 from 'base-64';
+import { getValidFilelist, uploadFile } from './i18n';
 
 const currentValidTypes = [
-  "TenantTheme",
-  "ProgramEmailConfig",
-  "ProgramWidgetConfig",
-  "ProgramLinkConfig"
+  'TenantTheme',
+  'ProgramEmailConfig',
+  'ProgramWidgetConfig',
+  'ProgramLinkConfig'
 ];
 
 class UploadAssets extends Component {
@@ -35,11 +35,11 @@ class UploadAssets extends Component {
     this.setState({ loading: 'true' });
     const validFiles = await getValidFilelist(this.props.options);
     if (validFiles.length === 0) {
-      console.log("\nNo valid translation file found.");
+      console.log('\nNo valid translation file found.');
       process.exit();
     }
     this.setState({
-      loading:'false',
+      loading: 'false',
       validFilelist: validFiles
     });
   }
@@ -51,7 +51,7 @@ class UploadAssets extends Component {
   }
 
   render() {
-    if ( this.state.loading === 'false') {
+    if (this.state.loading === 'false') {
       return (
         <UploadingFiles
           handleUploadAllDone={this.handleUploadAllDone}
@@ -61,11 +61,15 @@ class UploadAssets extends Component {
       );
     } else if (this.state.loading === 'true') {
       //in the process of reading file
-      return (<div> <Spinner green/> Searching for valid translation files... </div>);
+      return (
+        <div>
+          {' '}
+          <Spinner green /> Searching for valid translation files...{' '}
+        </div>
+      );
     }
   }
 }
-
 
 class UploadingFiles extends Component {
   constructor(props) {
@@ -99,12 +103,14 @@ class UploadingFiles extends Component {
     this.setState(prevState => {
       let status = prevState.eachFileDone;
       status[name] = true;
-      const allFileChecked = Object.keys(status).reduce((acc, cur) => acc&&status[cur]);
+      const allFileChecked = Object.keys(status).reduce(
+        (acc, cur) => acc && status[cur]
+      );
       return {
         eachFileDone: status,
         allDone: allFileChecked
       };
-  });
+    });
   }
 
   render() {
@@ -112,8 +118,8 @@ class UploadingFiles extends Component {
       if (this.state.eachFileDone[path]) {
         return (
           <div>
-            {" "}
-            <Color green> ✔ </Color> Uploaded {path}{" "}
+            {' '}
+            <Color green> ✔ </Color> Uploaded {path}{' '}
           </div>
         );
       } else {
@@ -130,49 +136,53 @@ class UploadingFiles extends Component {
   }
 }
 
-
-
 class UploadingEachFile extends Component {
   constructor(props) {
     super(props);
   }
 
-
   async componentDidMount() {
-    const {path, options} = this.props;
-    const uploadDone = await uploadFile({path, options});
-    if(uploadDone) {
+    const { path, options } = this.props;
+    let uploadDone = false;
+    uploadDone = await uploadFile({ path, options });
+    if (uploadDone) {
       this.props.handleSingleUploadDone(path);
     }
   }
   render() {
     return (
       <div>
-        {"  "}
+        {'  '}
         <Spinner green />
-        {"  "} Uploading {this.props.path}{" "}
+        {'  '} Uploading {this.props.path}{' '}
       </div>
     );
   }
 }
 
 export default program => {
-  let upload = program.command("upload");
+  let upload = program.command('uploadTranslations');
 
   upload
-    .description("upload translations")
-    .option("-d,--domainname <domainname>", "required - domain") //naming collision with domain, use domainname instead
-    .option("-k,--apiKey  <apiKey>", "required - authToken")
-    .option("-t,--tenant <tenant>", "required - which tenant")
-    .option("-f,--filepath <filepath>", "required - the file path")
+    .description('upload translations')
+    .option('-k,--apiKey  <apiKey>', 'required - authToken')
+    .option('-t,--tenant <tenant>', 'required - which tenant')
     .option(
-      "-p, --typename <typename>",
-      "required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig"
+      '-p, --typename <typename>',
+      'required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
     )
     .option(
-      "-i, --programId [programId]",
-      "optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig"
+      '-i, --programId [programId]',
+      'optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
     )
+    .option(
+      '-f,--filepath [filepath]',
+      'optional - the file path. Defaults to the current working directory.'
+    )
+    .option(
+      '-d,--_domain [_domain]',
+      'optional - domain. May be useful if you are using a proxy.'
+    ) //naming collision with domain, use _domain instead
     .action(options => {
       if (
         !options.apiKey ||
@@ -180,31 +190,30 @@ export default program => {
         !options.filepath ||
         !options.typename
       ) {
-        console.log("Missing parameter");
+        console.log('Missing parameter');
         return;
       }
 
       if (!currentValidTypes.includes(options.typename)) {
         console.log(
-          "Invalid typename, must be one of TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig."
+          'Invalid typename, must be one of TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.'
         );
         process.exit();
       }
-      if (options.typename !== "TenantTheme" && !options.programId) {
+      if (options.typename !== 'TenantTheme' && !options.programId) {
         console.log(
-          "Program Id required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig."
+          'Program Id required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig.'
         );
         return;
       }
       const newOptions = {
-        auth: base64.encode(":" + options.apiKey),
+        auth: base64.encode(':' + options.apiKey),
         ...options,
-        domainname:
-        options.domainname || "https://staging.referralsaasquatch.com"
+        domain: options._domain || 'https://app.referralsaasquatch.com',
+        filepath: options.filepath || process.cwd()
       };
       render(<UploadAssets options={newOptions} />);
     });
 
   return upload;
 };
-
