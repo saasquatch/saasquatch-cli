@@ -11,6 +11,7 @@ import publishCommand from "./commands/publish";
 import { version } from "../package.json";
 import uploadCommand from "./commands/upload";
 import downloadCommand from "./commands/download";
+import logoutCommand from "./commands/logout";
 
 // Allows for interactive keyboard stuff with Ink
 readline.emitKeypressEvents(process.stdin);
