@@ -21,6 +21,7 @@ program.version(version);
 publishCommand(program);
 uploadCommand(program);
 downloadCommand(program);
+logoutCommand(program);
 
 program
   .command("*")

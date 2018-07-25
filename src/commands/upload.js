@@ -3,7 +3,7 @@
 import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import base64 from 'base-64';
-import { getValidFilelist, uploadFile } from './i18n';
+import { getValidFilelist, uploadFile } from '../utils/i18n';
 
 const currentValidTypes = [
   'TenantTheme',

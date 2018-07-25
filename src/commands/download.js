@@ -3,10 +3,10 @@
 import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import base64 from 'base-64';
-import {readFile, fileExist} from './fileIO';
-import {takeLoginInfo} from './login';
-import { List, ListItem } from './components/checkbox-list';
-import { getTranslatableAssets, writingEachAsset } from './i18n';
+import {readFile, fileExist} from '../utils/fileIO';
+import {takeLoginInfo} from '../utils/login';
+import { List, ListItem } from '../components/checkbox-list';
+import { getTranslatableAssets, writingEachAsset } from '../utils/i18n';
 
 class DownloadAssets extends Component {
   constructor(props) {
@@ -240,6 +240,7 @@ export default program => {
         const newOptions = {
           auth: base64.encode(':' + loginInfo.apiKey),
           ...options,
+          tenant:loginInfo.tenant,
           domain: loginInfo.domain,
           filepath: options.filepath || process.cwd()
         };

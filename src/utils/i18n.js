@@ -1,6 +1,6 @@
 //@ts-check
 import path from 'path';
-import Query from './query/query';
+import Query from '../query/query';
 import mkdirp from 'mkdirp';
 import util from 'util';
 import fs from 'fs';
