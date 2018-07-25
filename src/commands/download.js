@@ -244,6 +244,8 @@ export default program => {
           filepath: options.filepath || process.cwd()
         };
         render(<DownloadAssets options={newOptions} />);
+      } catch (e) {
+        console.error(e);
       }
       
     });
