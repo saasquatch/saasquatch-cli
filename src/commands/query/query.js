@@ -138,7 +138,7 @@ const Query = ({ domain, tenant, authToken }) => {
                     }
                   }
                 }
-              } 
+              }
             }
           }
         `
