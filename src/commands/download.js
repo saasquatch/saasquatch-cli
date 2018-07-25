@@ -3,7 +3,8 @@
 import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import base64 from 'base-64';
-
+import {readFile, fileExist} from './fileIO';
+import {takeLoginInfo} from './login';
 import { List, ListItem } from './components/checkbox-list';
 import { getTranslatableAssets, writingEachAsset } from './i18n';
 
@@ -216,28 +217,35 @@ export default program => {
 
   download
     .description('download an translation')
-    .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
-    .option('-t,--tenant <tenant>', 'required - which tenant')
+    // .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
+    // .option('-t,--tenant <tenant>', 'required - which tenant')
     .option(
       '-f,--filepath [filepath]',
       'optional - the file path. Defaults to the current working directory.'
     )
-    .option(
-      '-d,--_domain [_domain]',
-      'optional - domain. May be useful if you are using a proxy.'
-    ) //naming collision with domain, use _domain instead
-    .action(options => {
-      if (!options.apiKey || !options.tenant) {
-        console.log('Missing parameter');
-        return;
+    // .option(
+    //   '-d,--_domain [_domain]',
+    //   'optional - domain. May be useful if you are using a proxy.') //naming collision with domain, use _domain instead
+    .action( async options => {
+      // if (!options.apiKey || !options.tenant) {
+      //   console.log('Missing parameter');
+      //   return;
+      // }
+      if(!fileExist('./login.json')){
+        await takeLoginInfo();
       }
-      const newOptions = {
-        auth: base64.encode(':' + options.apiKey),
-        ...options,
-        domain: options._domain || 'https://staging.referralsaasquatch.com',
-        filepath: options.filepath || process.cwd()
-      };
-      render(<DownloadAssets options={newOptions} />);
+      try {
+        const loginInfoBuf = await readFile('./login.json');
+        const loginInfo = JSON.parse(loginInfoBuf.toString());
+        const newOptions = {
+          auth: base64.encode(':' + loginInfo.apiKey),
+          ...options,
+          domain: loginInfo.domain,
+          filepath: options.filepath || process.cwd()
+        };
+        render(<DownloadAssets options={newOptions} />);
+      }
+      
     });
 
   return download;
