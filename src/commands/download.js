@@ -1,11 +1,13 @@
 // @ts-check
 
-import { h, render, Component, Color } from 'ink';
-import Spinner from 'ink-spinner';
-import base64 from 'base-64';
+import { h, render, Component, Color } from "ink";
+import Spinner from "ink-spinner";
+import base64 from "base-64";
+import {takeLoginInfo} from './login';
+import { List, ListItem } from "./components/checkbox-list";
+import { getTranslatableAssets, writingEachAsset } from "./i18n";
+import {readFile, fileExist} from './fileIO';
 
-import { List, ListItem } from './components/checkbox-list';
-import { getTranslatableAssets, writingEachAsset } from './i18n';
 
 class DownloadAssets extends Component {
   constructor(props) {
@@ -27,7 +29,7 @@ class DownloadAssets extends Component {
       const assetList = await getTranslatableAssets(this.props.options);
 
       if (assetList.length === 0) {
-        console.log('\nNo available translatable asset found.');
+        console.log("\nNo available translatable asset found.");
         process.exit();
         return;
       }
@@ -197,8 +199,8 @@ class DownloadEachAsset extends Component {
   render() {
     return (
       <div>
-        {' '}
-        <Spinner green /> Downloading {this.props.assetData.name}...{' '}
+        {" "}
+        <Spinner green /> Downloading {this.props.assetData.name}...{" "}
       </div>
     );
   }
@@ -206,39 +208,41 @@ class DownloadEachAsset extends Component {
 
 const FinishCheckmark = ({ name }) => (
   <div>
-    {' '}
+    {" "}
     {name} <Color green>✔ source downloaded </Color>
   </div>
 );
 
+const loginFile = './login.json';
+
 export default program => {
-  let download = program.command('downloadTranslations');
+  let download = program.command("downloadTranslations");
 
   download
-    .description('download an translation')
-    .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
-    .option('-t,--tenant <tenant>', 'required - which tenant')
+    .description("download an translation")
     .option(
-      '-f,--filepath [filepath]',
-      'optional - the file path. Defaults to the current working directory.'
+      "-f,--filepath [filepath]",
+      "optional - the file path. Defaults to the current working directory."
     )
-    .option(
-      '-d,--_domain [_domain]',
-      'optional - domain. May be useful if you are using a proxy.'
-    ) //naming collision with domain, use _domain instead
-    .action(options => {
-      if (!options.apiKey || !options.tenant) {
-        console.log('Missing parameter');
-        return;
+    .action( async options => {
+      if (!fileExist(loginFile)) {
+         await takeLoginInfo();
       }
-      const newOptions = {
-        auth: base64.encode(':' + options.apiKey),
-        ...options,
-        domain: options._domain || 'https://app.referralsaaasquatch.com',
-        filepath: options.filepath || process.cwd()
-      };
-      render(<DownloadAssets options={newOptions} />);
+      try {
+        const loginJSON = await readFile(loginFile);
+        const loginInfo = JSON.parse(loginJSON.toString());
+        const newOptions = {
+          auth: base64.encode(":" + loginInfo.apiKey),
+          ...options,
+          domain: loginInfo.domain,
+          tenant: loginInfo.tenant,
+          filepath: options.filepath || process.cwd()
+        };
+        console.log(newOptions.auth);
+        render(<DownloadAssets options={newOptions} />);
+      } catch (e) {
+        console.error(e);
+      }
     });
-
   return download;
 };

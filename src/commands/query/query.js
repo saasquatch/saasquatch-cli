@@ -9,6 +9,7 @@ const Query = ({ domain, tenant, authToken }) => {
   return {
     getClient() {
       const uri = domain + "/api/v1/" + tenant + "/graphql";
+      console.log(uri);
       const headers = {
         Authorization: "Basic " + authToken //base64
       };
@@ -138,11 +139,41 @@ const Query = ({ domain, tenant, authToken }) => {
                     }
                   }
                 }
-              } 
+              }
             }
           }
         `
       });
+    },
+
+    createExportJob(jobInput) {
+      return this.getClient().query({
+        mutation: gql`
+          mutation($jobInput: JobInput!) {
+            createJob(jobInput: $jobInput) {
+              id
+            }
+          }
+          `,
+          variables: {
+            jobInput
+          }
+      })
+    },
+
+    getExportJob(jobId) {
+      return this.getClient().query({
+        query: gql`
+          query($jobId: ID!) {
+            job(id:$jobId){
+              downloadUrl
+            }
+          }
+        `,
+        variables: {
+          jobId
+        }
+      })
     },
 
     getAssets() {

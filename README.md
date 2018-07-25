@@ -52,7 +52,7 @@ $ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w
 -d, --_domain [_domain] optional - domain. May be useful if you are using a proxy
 -t, --tenant [tenant]  required - which tenant to use
 -k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
--f, --filepath <filepath> optional - path where downloaded files to be saved. Defaults to the current working directory
+-f, --filepath [filepath] optional - path where downloaded files to be saved. Defaults to the current working directory
 ```
 
 ### squatch upload
@@ -69,7 +69,7 @@ $ squatch upload -d https://staging.referralsaasquatch.com -t test_alu125hh1si9w
 -d, --_domain [_domain] optional - domain. May be useful if you are using a proxy
 -t, --tenant [tenant]  required - which tenant to use
 -k, --apiKey [apiKey]  required - which API key to use (for corresponding tenant)
--f, --filepath <filepath> optional - path of files to be uploaded. Defaults to the current working directory
+-f, --filepath [filepath] optional - path of files to be uploaded. Defaults to the current working directory
 -p, --typename [typename] required - type of assets to be uploaded, one of TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig
 -i, --programId [programId] optional - program id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig
 ```

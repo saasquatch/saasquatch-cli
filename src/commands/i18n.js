@@ -1,11 +1,11 @@
 //@ts-check
-import path from "path";
-import Query from "./query/query";
-import mkdirp from "mkdirp";
-import util from "util";
-import fs from "fs";
-import LocaleCode from "locale-code";
-import glob from "glob";
+import path from 'path';
+import Query from './query/query';
+import mkdirp from 'mkdirp';
+import util from 'util';
+import fs from 'fs';
+import LocaleCode from 'locale-code';
+import glob from 'glob';
 
 const fs_writeFile = util.promisify(fs.writeFile);
 const fs_readFile = util.promisify(fs.readFile);
@@ -16,8 +16,8 @@ export async function writingEachAsset({ dir, assetData }) {
   const { name, data } = assetData;
 
   // TenantTheme per tenant
-  if (name === "TenantTheme") {
-    const path = dir + "/TenantTheme";
+  if (name === 'TenantTheme') {
+    const path = dir + '/TenantTheme';
     mkdirp.sync(path);
     //write default - in root asset folder
     await writeFile({
@@ -36,21 +36,21 @@ export async function writingEachAsset({ dir, assetData }) {
     }
   } else {
     //asset per program
-    const programRootPath = dir + "/" + name;
+    const programRootPath = dir + '/' + name;
     mkdirp.sync(programRootPath);
     //put default in root folder of each program
     for (var i = 0; i < data.length; i++) {
       const assetData = data[i];
-      const path = programRootPath + "/" + assetData.__typename;
+      const path = programRootPath + '/' + assetData.__typename;
       mkdirp.sync(path);
       //write default
-      if (assetData.__typename === "ProgramLinkConfig") {
+      if (assetData.__typename === 'ProgramLinkConfig') {
         await writeFile({
           data: JSON.stringify(assetData.messaging),
           dir: path,
-          name: "default"
+          name: 'default'
         });
-        const transPath = path + "/default";
+        const transPath = path + '/default';
         writeTranslation(transPath, assetData);
       } else {
         await writeFile({
@@ -59,7 +59,7 @@ export async function writingEachAsset({ dir, assetData }) {
           name: assetData.key
         });
         //write translations
-        const transPath = path + "/" + assetData.key;
+        const transPath = path + '/' + assetData.key;
         await writeTranslation(transPath, assetData);
       }
     }
@@ -82,8 +82,8 @@ export async function getTranslatableAssets({ domain, tenant, auth }) {
 
   assets.data.translatableAssets.forEach(asset => {
     const typename = asset.__typename;
-    if (typename === "TenantTheme") {
-      assetList.push({ name: "TenantTheme", id: null, data: asset });
+    if (typename === 'TenantTheme') {
+      assetList.push({ name: 'TenantTheme', id: null, data: asset });
     }
   });
 
@@ -118,12 +118,12 @@ function writeFile({ data, dir, name }) {
   const filePath =
     path.normalize(
       path.format({
-        root: "/ignored",
+        root: '/ignored',
         dir: dir,
         base: name
       })
-    ) + ".json";
-  return fs_writeFile(filePath, data, { encoding: "utf8" });
+    ) + '.json';
+  return fs_writeFile(filePath, data, { encoding: 'utf8' });
 }
 
 export async function uploadFile({ path, options }) {
@@ -141,7 +141,7 @@ export async function uploadFile({ path, options }) {
   let data = null;
   //read file
   try {
-    await fs_open(path, "r");
+    await fs_open(path, 'r');
   } catch (e) {
     console.error(e);
   }
@@ -153,7 +153,7 @@ export async function uploadFile({ path, options }) {
   }
 
   if (data === undefined) {
-    console.log(path + " :data undefined");
+    console.log(path + ' :data undefined');
   }
 
   const translationInstanceInput = {
@@ -171,10 +171,10 @@ export async function uploadFile({ path, options }) {
 }
 
 function standardizeLocale(filename) {
-  const str = filename.split(".");
-  let localeStr = str[0].split("-");
+  const str = filename.split('.');
+  let localeStr = str[0].split('-');
   if (localeStr.length > 1) {
-    return localeStr[0] + "_" + localeStr[1];
+    return localeStr[0] + '_' + localeStr[1];
   } else {
     return localeStr[0];
   }
@@ -182,42 +182,42 @@ function standardizeLocale(filename) {
 
 function generateAssetKey({ typename, path, programId }) {
   const map = {
-    ProgramEmailConfig: "e",
-    ProgramWidgetConfig: "w",
-    ProgramLinkConfig: "l"
+    ProgramEmailConfig: 'e',
+    ProgramWidgetConfig: 'w',
+    ProgramLinkConfig: 'l'
   };
   const filename = getNameFromPath(path);
   const key = getKeyFromPath(path);
   const locale = standardizeLocale(filename);
-  if (typename === "TenantTheme") {
-    return "TenantTheme" + "/" + locale;
+  if (typename === 'TenantTheme') {
+    return 'TenantTheme' + '/' + locale;
   } else {
-    return "p/" + programId + "/" + map[typename] + "/" + key + "/" + locale;
+    return 'p/' + programId + '/' + map[typename] + '/' + key + '/' + locale;
   }
 }
 
 //check if the filename matches the locale format
 function validateLocale(dir) {
   let locale = getNameFromPath(dir);
-  const temp = locale.split("_");
+  const temp = locale.split('_');
   if (temp.length > 1) {
-    locale = temp[0] + "-" + temp[1];
+    locale = temp[0] + '-' + temp[1];
   }
-  return LocaleCode.validate(locale.split(".")[0]);
+  return LocaleCode.validate(locale.split('.')[0]);
 }
 
 function getNameFromPath(path) {
-  const names1 = path.split("\\");
-  const names2 = names1[names1.length - 1].split("/");
+  const names1 = path.split('\\');
+  const names2 = names1[names1.length - 1].split('/');
   return names2[names2.length - 1];
 }
 
 function getKeyFromPath(path) {
-  const names1 = path.split("\\");
+  const names1 = path.split('\\');
   if (names1.length > 1) {
     return names1[names1.length - 2];
   } else {
-    const names2 = path.split("/");
+    const names2 = path.split('/');
     return names2[names2.length - 2];
   }
 }
@@ -225,11 +225,11 @@ function getKeyFromPath(path) {
 //put valid keys into a pattern string for directory traversal and validation
 function getValidKeyPattern(validKeys) {
   //valid key patterns
-  let pattern = "@(";
+  let pattern = '@(';
   validKeys.forEach(key => {
-    pattern = pattern + key + "|";
+    pattern = pattern + key + '|';
   });
-  return pattern.substring(0, pattern.length - 1) + ")";
+  return pattern.substring(0, pattern.length - 1) + ')';
 }
 
 export async function getValidFilelist(options) {
@@ -238,7 +238,7 @@ export async function getValidFilelist(options) {
   const validKeyPattern = getValidKeyPattern(validKeys);
   let pattern = null;
   if (fs.lstatSync(options.filepath).isDirectory()) {
-    pattern = options.filepath + "/**/" + validKeyPattern + "/*.json";
+    pattern = options.filepath + '/**/' + validKeyPattern + '/*.json';
   } else {
     pattern = options.filepath;
   }
@@ -248,9 +248,9 @@ export async function getValidFilelist(options) {
 
 function getValidFiles(files, validKeys) {
   return files.filter(filename => {
-    let name = filename.split("/");
+    let name = filename.split('/');
     if (!validateLocale(name[name.length - 1])) {
-      console.log(filename + " : invalid locale code");
+      console.log(filename + ' : invalid locale code');
     }
     return (
       validKeys.includes(name[name.length - 2]) &&
@@ -264,14 +264,14 @@ async function getValidKeys(options) {
   let assets = null;
   let keys = [];
 
-  if (typename === "TenantTheme") {
-    keys.push("TenantTheme");
-  } else if (typename === "ProgramLinkConfig") {
-    keys.push("default");
+  if (typename === 'TenantTheme') {
+    keys.push('TenantTheme');
+  } else if (typename === 'ProgramLinkConfig') {
+    keys.push('default');
   } else {
     if (programId === undefined) {
       console.log(
-        "Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig"
+        'Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig'
       );
       process.exit(0);
     }
@@ -288,7 +288,7 @@ async function getValidKeys(options) {
         assets = receivedData.data.program.translatableAssets;
       } else {
         console.log(
-          "Program with id " + programId + " not found in current tenant."
+          'Program with id ' + programId + ' not found in current tenant.'
         );
         process.exit(0);
       }
