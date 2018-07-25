@@ -1,5 +1,5 @@
 // file: `config/apollo/fragmentMatcher.js`
-import { IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
+import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 
 /* run the following and get INTERFACE / UNION types - TODO - it would be nice to generate these as a build step (getting correct environment?)
 - see https://github.com/apollographql/apollo-client/blob/master/docs/source/recipes/fragment-matching.md
@@ -20,38 +20,38 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
     __schema: {
       types: [
         {
-          kind: "INTERFACE",
-          name: "TranslatableAsset",
+          kind: 'INTERFACE',
+          name: 'TranslatableAsset',
           possibleTypes: [
             {
-              name: "ProgramEmailConfig"
+              name: 'ProgramEmailConfig'
             },
             {
-              name: "ProgramWidgetConfig"
+              name: 'ProgramWidgetConfig'
             },
             {
-              name: "TenantTheme"
+              name: 'TenantTheme'
             }
           ]
         },
         {
-          kind: "INTERFACE",
-          name: "IsPredefinedReward",
+          kind: 'INTERFACE',
+          name: 'IsPredefinedReward',
           possibleTypes: [
             {
-              name: "ProgramRewardConfig"
+              name: 'ProgramRewardConfig'
             }
           ]
         },
         {
-          kind: "INTERFACE",
-          name: "ProgramTrigger",
+          kind: 'INTERFACE',
+          name: 'ProgramTrigger',
           possibleTypes: [
             {
-              name: "AfterUserCreatedOrUpdatedTrigger"
+              name: 'AfterUserCreatedOrUpdatedTrigger'
             },
             {
-              name: "ScheduledProgramTrigger"
+              name: 'ScheduledProgramTrigger'
             }
           ]
         } // this is an example, put your INTERFACE and UNION kinds here!

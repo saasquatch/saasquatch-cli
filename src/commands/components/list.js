@@ -1,11 +1,11 @@
 /**
  * Based on ink-checkbox-list {@link https://github.com/MaxMEllon/ink-checkbox-list}
  */
-import { h, Component } from "ink";
-import figures from "figures";
-import PropTypes from "prop-types";
-import CheckBox from "./checkbox";
-import Cursor from "./cursor";
+import { h, Component } from 'ink';
+import figures from 'figures';
+import PropTypes from 'prop-types';
+import CheckBox from './checkbox';
+import Cursor from './cursor';
 
 const stdin = process.stdin;
 
@@ -32,11 +32,11 @@ class List extends Component {
   }
 
   componentDidMount() {
-    stdin.on("keypress", this.handleKeyPress);
+    stdin.on('keypress', this.handleKeyPress);
   }
 
   componentWillUnMount() {
-    stdin.removeListener("keypress", this.handleKeyPress);
+    stdin.removeListener('keypress', this.handleKeyPress);
   }
 
   moveUp() {
@@ -73,7 +73,7 @@ class List extends Component {
 
   submit() {
     this.setState({ cursor: -1 });
-    stdin.removeListener("keypress", this.handleKeyPress);
+    stdin.removeListener('keypress', this.handleKeyPress);
     if (this.props.onSubmit) {
       this.props.onSubmit(this.childValues);
     }
@@ -82,22 +82,22 @@ class List extends Component {
   handleKeyPress(ch, key) {
     const pressedKey = key.name;
     switch (pressedKey) {
-      case "up": {
+      case 'up': {
         this.moveUp();
         break;
       }
-      case "down": {
+      case 'down': {
         this.moveDown();
         break;
       }
-      case "space": {
+      case 'space': {
         this.toggleCurrentCursor();
         if (this.props.onChange) {
           this.props.onChange(this.childValues);
         }
         break;
       }
-      case "return": {
+      case 'return': {
         this.submit();
         break;
       }

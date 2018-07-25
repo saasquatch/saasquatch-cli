@@ -1,17 +1,17 @@
-import chalk from "chalk";
-import request from "request";
+import chalk from 'chalk';
+import request from 'request';
 
 export default function(program) {
   let publish;
 
-  publish = program.command("publish");
+  publish = program.command('publish');
 
   publish
-    .description("Publish a theme")
-    .option("-t, --tenant [tenant]", "required - which tenant to use")
+    .description('Publish a theme')
+    .option('-t, --tenant [tenant]', 'required - which tenant to use')
     .option(
-      "-k, --apiKey [apiKey]",
-      "required - which API key to use (for corresponding tenant)"
+      '-k, --apiKey [apiKey]',
+      'required - which API key to use (for corresponding tenant)'
     )
     .action(function(options) {
       const tenant = options.tenant,
@@ -21,7 +21,7 @@ export default function(program) {
       if (!options || !apiKey) {
         console.log(
           chalk.yellow(
-            "\n  Missing parameter. Both tenant and API key need to be specified to publish:"
+            '\n  Missing parameter. Both tenant and API key need to be specified to publish:'
           )
         );
         publish.outputHelp();
@@ -29,21 +29,21 @@ export default function(program) {
       }
 
       const magicConstants = {
-        completedMsg: "PUBLISH COMPLETED",
-        errorMsgPrefix: "ERROR",
+        completedMsg: 'PUBLISH COMPLETED',
+        errorMsgPrefix: 'ERROR',
         themeStatusSuccessCode: 200,
         deploySuccessCode: 202,
         pollingInterval: 500
       };
 
       console.log(
-        "Publishing theme for %s with key %s",
+        'Publishing theme for %s with key %s',
         chalk.blue(tenant),
         chalk.blue(apiKey)
       );
 
       // HTTP Basic Auth
-      const auth = apiKey + ":" + apiKey + "@";
+      const auth = apiKey + ':' + apiKey + '@';
 
       // Gets the theme status log, outputting each logItem to `cb`
       // TODO: Rewrite to promises instead of callbacks, use less callbacks
@@ -51,22 +51,22 @@ export default function(program) {
         request(
           {
             uri:
-              "https://" +
+              'https://' +
               auth +
-              "app.referralsaasquatch.com/api/v1/" +
+              'app.referralsaasquatch.com/api/v1/' +
               tenant +
-              "/theme/publish_status",
-            method: "GET"
+              '/theme/publish_status',
+            method: 'GET'
           },
           function(error, response, body) {
             if (error) {
-              console.log("Unhandled error polling publish status", error);
+              console.log('Unhandled error polling publish status', error);
               return;
             }
 
             if (response.statusCode !== magicConstants.themeStatusSuccessCode) {
               console.log(
-                "Unhandled HTTP response polling publish status",
+                'Unhandled HTTP response polling publish status',
                 response
               );
               return;
@@ -92,7 +92,7 @@ export default function(program) {
       // Recursively watched
       const watchStatusLog = function(sinceTime) {
         let thisLoopLatest = null;
-        let lastMsg = "";
+        let lastMsg = '';
 
         getStatus(
           function(logItem) {
@@ -136,23 +136,23 @@ export default function(program) {
           request(
             {
               uri:
-                "https://" +
+                'https://' +
                 auth +
-                "app.referralsaasquatch.com/api/v1/" +
+                'app.referralsaasquatch.com/api/v1/' +
                 tenant +
-                "/theme/publish",
-              method: "POST",
+                '/theme/publish',
+              method: 'POST',
               json: {}
             },
             function(error, response) {
               if (error) {
-                console.log("Unhandled error publishing theme", error);
+                console.log('Unhandled error publishing theme', error);
                 return;
               }
 
               if (response.statusCode !== magicConstants.deploySuccessCode) {
                 console.log(
-                  "Unhandled HTTP response to publishing theme",
+                  'Unhandled HTTP response to publishing theme',
                   response
                 );
                 return;
