@@ -3,10 +3,13 @@
 import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import base64 from 'base-64';
-import {readFile, fileExist} from '../utils/fileIO';
-import {takeLoginInfo} from '../utils/login';
 import { List, ListItem } from '../components/checkbox-list';
 import { getTranslatableAssets, writingEachAsset } from '../utils/i18n';
+import {login} from '../utils/login';
+import readline from 'readline';
+
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
 
 class DownloadAssets extends Component {
   constructor(props) {
@@ -231,25 +234,18 @@ export default program => {
       //   console.log('Missing parameter');
       //   return;
       // }
-      if(!fileExist('./login.json')){
-        await takeLoginInfo();
-      }
-      try {
-        const loginInfoBuf = await readFile('./login.json');
-        const loginInfo = JSON.parse(loginInfoBuf.toString());
+      
+        const loginInfo = await login();
         const newOptions = {
           auth: base64.encode(':' + loginInfo.apiKey),
           ...options,
           tenant:loginInfo.tenant,
           domain: loginInfo.domain,
-          filepath: options.filepath || process.cwd()
+          filepath: loginInfo.filePath
         };
         render(<DownloadAssets options={newOptions} />);
-      } catch (e) {
-        console.error(e);
-      }
-      
-    });
+      }    
+    );
 
   return download;
 };

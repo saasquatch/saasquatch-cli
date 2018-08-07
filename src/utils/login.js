@@ -1,7 +1,37 @@
 import inquirer from 'inquirer';
-import {writeFile} from './fileIO';
+import dotenv from 'dotenv';
+import {writeFile,readFile, fileExist, createEnvFile} from './fileIO';
 
-export async function takeLoginInfo() {
+//save login info in env
+export async function login() {
+    if(!fileExist('./.env')) {
+        createEnvFile();
+    }
+    dotenv.config();
+
+    if(!fileExist('./login.json')){
+        await takeLoginInfo();
+      }
+      const filePath = await inquirer.prompt({
+        type:'input',
+        name:'filePath',
+        message:'file path',
+        default: ()=> {
+            return ('default: current directory');
+        }
+    });
+    const _filePath = (filePath === 'default: current directory') ? process.pwd() : filePath;
+      try {
+        const loginInfoBuf = await readFile('./login.json');
+        const loginInfo = {...JSON.parse(loginInfoBuf.toString()),
+            filePath:_filePath};
+        return loginInfo;
+      } catch (e) {
+          console.error(e);
+      }
+}
+
+async function takeLoginInfo() {  
     const tenant = await inquirer.prompt({
         type:'input',
         name:'tenant',

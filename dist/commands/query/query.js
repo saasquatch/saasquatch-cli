@@ -1,28 +1,47 @@
-import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import gql from "graphql-tag";
-import fetch from "node-fetch";
-import fragmentMatcher from "./fragmentMatcher";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _apolloClient = require("apollo-client");
+
+var _apolloLinkHttp = require("apollo-link-http");
+
+var _apolloCacheInmemory = require("apollo-cache-inmemory");
+
+var _graphqlTag = require("graphql-tag");
+
+var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
+
+var _nodeFetch = require("node-fetch");
+
+var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
+
+var _fragmentMatcher = require("./fragmentMatcher");
+
+var _fragmentMatcher2 = _interopRequireDefault(_fragmentMatcher);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const Query = ({ domain, tenant, authToken }) => {
   return {
     getClient() {
       const uri = domain + "/api/v1/" + tenant + "/graphql";
-      //console.log(uri);
+      console.log(uri);
       const headers = {
         Authorization: "Basic " + authToken //base64
       };
-      const client = new ApolloClient({
-        link: new HttpLink({ uri, headers, fetch }),
-        cache: new InMemoryCache({ fragmentMatcher })
+      const client = new _apolloClient.ApolloClient({
+        link: new _apolloLinkHttp.HttpLink({ uri, headers, fetch: _nodeFetch2.default }),
+        cache: new _apolloCacheInmemory.InMemoryCache({ fragmentMatcher: _fragmentMatcher2.default })
       });
       return client;
     },
 
     uploadAssets(translationInstanceInput) {
       return this.getClient().mutate({
-        mutation: gql`
+        mutation: _graphqlTag2.default`
           mutation($translationInstanceInput: TranslationInstanceInput!) {
             upsertTranslationInstance(
               translationInstanceInput: $translationInstanceInput
@@ -39,7 +58,7 @@ const Query = ({ domain, tenant, authToken }) => {
 
     getSingleProgramData(programId) {
       return this.getClient().query({
-        query: gql`
+        query: _graphqlTag2.default`
           query($programId: ID!) {
             program(id: $programId) {
               name
@@ -92,7 +111,7 @@ const Query = ({ domain, tenant, authToken }) => {
 
     listProgramAssetData() {
       return this.getClient().query({
-        query: gql`
+        query: _graphqlTag2.default`
           query {
             programs {
               data {
@@ -148,22 +167,22 @@ const Query = ({ domain, tenant, authToken }) => {
 
     createExportJob(jobInput) {
       return this.getClient().query({
-        mutation: gql`
+        mutation: _graphqlTag2.default`
           mutation($jobInput: JobInput!) {
             createJob(jobInput: $jobInput) {
               id
             }
           }
           `,
-          variables: {
-            jobInput
-          }
-      })
+        variables: {
+          jobInput
+        }
+      });
     },
 
     getExportJob(jobId) {
       return this.getClient().query({
-        query: gql`
+        query: _graphqlTag2.default`
           query($jobId: ID!) {
             job(id:$jobId){
               downloadUrl
@@ -173,12 +192,12 @@ const Query = ({ domain, tenant, authToken }) => {
         variables: {
           jobId
         }
-      })
+      });
     },
 
     getAssets() {
       return this.getClient().query({
-        query: gql`
+        query: _graphqlTag2.default`
           query {
             translatableAssets {
               __typename
@@ -218,4 +237,4 @@ const Query = ({ domain, tenant, authToken }) => {
   };
 };
 
-export default Query;
+exports.default = Query;
