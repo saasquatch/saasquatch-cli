@@ -5,8 +5,9 @@ import Spinner from 'ink-spinner';
 import base64 from 'base-64';
 import { List, ListItem } from '../components/checkbox-list';
 import { getTranslatableAssets, writingEachAsset } from '../utils/i18n';
-import {login} from '../utils/login';
+import { takeDownloadInfo } from '../utils/prompt';
 import readline from 'readline';
+import dotenv from 'dotenv';
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -220,28 +221,15 @@ export default program => {
 
   download
     .description('download an translation')
-    // .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
-    // .option('-t,--tenant <tenant>', 'required - which tenant')
-    .option(
-      '-f,--filepath [filepath]',
-      'optional - the file path. Defaults to the current working directory.'
-    )
-    // .option(
-    //   '-d,--_domain [_domain]',
-    //   'optional - domain. May be useful if you are using a proxy.') //naming collision with domain, use _domain instead
     .action( async options => {
-      // if (!options.apiKey || !options.tenant) {
-      //   console.log('Missing parameter');
-      //   return;
-      // }
-      
-        const loginInfo = await login();
+      dotenv.config();
+      const downloadInfo = await takeDownloadInfo();
         const newOptions = {
-          auth: base64.encode(':' + loginInfo.apiKey),
+          auth: base64.encode(':' + process.env.APIKEY),
           ...options,
-          tenant:loginInfo.tenant,
-          domain: loginInfo.domain,
-          filepath: loginInfo.filePath
+          tenant: process.env.TENANT,
+          domain: process.env.HOST,
+          filepath: downloadInfo.filePath
         };
         render(<DownloadAssets options={newOptions} />);
       }    

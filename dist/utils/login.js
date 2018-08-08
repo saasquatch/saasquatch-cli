@@ -12,11 +12,21 @@ var _inquirer = require('inquirer');
 
 var _inquirer2 = _interopRequireDefault(_inquirer);
 
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
+
 var _fileIO = require('./fileIO');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//save login info in env
 async function login() {
+    if (!(0, _fileIO.fileExist)('./.env')) {
+        (0, _fileIO.createEnvFile)();
+    }
+    _dotenv2.default.config();
+
     if (!(0, _fileIO.fileExist)('./login.json')) {
         await takeLoginInfo();
     }

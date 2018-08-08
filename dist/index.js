@@ -15,6 +15,10 @@ var _readline = require("readline");
 
 var _readline2 = _interopRequireDefault(_readline);
 
+var _dotenv = require("dotenv");
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
+
 var _publish = require("./commands/publish");
 
 var _publish2 = _interopRequireDefault(_publish);
@@ -29,24 +33,25 @@ var _download = require("./commands/download");
 
 var _download2 = _interopRequireDefault(_download);
 
-var _logout = require("./commands/logout");
+var _setup = require("./commands/setup");
 
-var _logout2 = _interopRequireDefault(_logout);
+var _setup2 = _interopRequireDefault(_setup);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Allows for interactive keyboard stuff with Ink
-_readline2.default.emitKeypressEvents(process.stdin);
-// Polyfill for Async/Await and other features in older Node versionss
 
+// Polyfill for Async/Await and other features in older Node versionss
+_readline2.default.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
 _commander2.default.version(_package.version);
+_dotenv2.default.config();
 
+(0, _setup2.default)(_commander2.default);
 (0, _publish2.default)(_commander2.default);
 (0, _upload2.default)(_commander2.default);
 (0, _download2.default)(_commander2.default);
-(0, _logout2.default)(_commander2.default);
 
 _commander2.default.command("*").description("Prints help").action(function () {
   console.error(_chalk2.default.red("\n  Invalid command. Please use one of the following:"));

@@ -18,9 +18,11 @@ var _base2 = _interopRequireDefault(_base);
 
 var _i18n = require('../utils/i18n');
 
-var _login = require('../utils/login');
+var _prompt = require('../utils/prompt');
 
-var _uploadInfo = require('../utils/uploadInfo');
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -187,43 +189,20 @@ class UploadingEachFile extends _ink.Component {
 exports.default = program => {
   let upload = program.command('uploadTranslations');
 
-  upload.description('upload translations')
-  // .option(
-  //   '-p, --typename <typename>',
-  //   'required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
-  // )
-  // .option(
-  //   '-i, --programId [programId]',
-  //   'optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
-  // )
-  .option('-f,--filepath [filepath]', 'optional - the file path. Defaults to the current working directory.')
-  // .option(
-  //   '-d,--_domain [_domain]',
-  //   'optional - domain. May be useful if you are using a proxy.'
-  // ) //naming collision with domain, use _domain instead
-  .action(async options => {
-    // if (
-    //   !options.apiKey ||
-    //   !options.tenant ||
-    //   !options.filepath ||
-    //   !options.typename
-    // ) {
-    //   console.log('Missing parameter');
-    //   return;
-    // }
+  upload.description('upload translations').action(async options => {
+    _dotenv2.default.config();
     try {
-      const loginInfo = await (0, _login.login)();
-      const uploadInfo = await (0, _uploadInfo.takeUploadInfo)();
+      const uploadInfo = await (0, _prompt.takeUploadInfo)();
 
-      if (uploadInfo.typename !== 'TenantTheme' && !uploadInfo.programId) {
+      if (uploadInfo.typename !== 'TenantTheme' && !process.env.SAASQUATCH_PROGRAM_ID) {
         console.log('Program Id required for email, widget, messaging.');
         return;
       }
       const newOptions = _extends({
-        auth: _base2.default.encode(':' + loginInfo.apiKey)
+        auth: _base2.default.encode(':' + process.env.APIKEY)
       }, options, {
-        domain: loginInfo.domain,
-        filepath: loginInfo.filePath
+        domain: process.env.HOST,
+        filepath: uploadInfo.filePath
       });
       (0, _ink.render)((0, _ink.h)(UploadAssets, { options: newOptions }));
     } catch (e) {

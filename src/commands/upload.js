@@ -4,9 +4,8 @@ import { h, render, Component, Color } from 'ink';
 import Spinner from 'ink-spinner';
 import base64 from 'base-64';
 import { getValidFilelist, uploadFile } from '../utils/i18n';
-import { login } from '../utils/login';
-import { takeUploadInfo } from '../utils/uploadInfo';
-
+import { takeUploadInfo } from '../utils/prompt';
+import dotenv from 'dotenv';
 
 const currentValidTypes = [
   'TenantTheme',
@@ -168,36 +167,12 @@ export default program => {
 
   upload
     .description('upload translations')
-    // .option(
-    //   '-p, --typename <typename>',
-    //   'required - valid typenames: TenantTheme, ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
-    // )
-    // .option(
-    //   '-i, --programId [programId]',
-    //   'optional - Program Id is required for ProgramEmailConfig, ProgramLinkConfig, ProgramWidgetConfig'
-    // )
-    .option(
-      '-f,--filepath [filepath]',
-      'optional - the file path. Defaults to the current working directory.'
-    )
-    // .option(
-    //   '-d,--_domain [_domain]',
-    //   'optional - domain. May be useful if you are using a proxy.'
-    // ) //naming collision with domain, use _domain instead
     .action ( async options => {
-      // if (
-      //   !options.apiKey ||
-      //   !options.tenant ||
-      //   !options.filepath ||
-      //   !options.typename
-      // ) {
-      //   console.log('Missing parameter');
-      //   return;
-      // }
+      dotenv.config();
       try {
         const uploadInfo = await takeUploadInfo();
 
-        if (uploadInfo.typename !== 'TenantTheme' && !uploadInfo.programId) {
+        if (uploadInfo.typename !== 'TenantTheme' && !process.env.SAASQUATCH_PROGRAM_ID) {
           console.log(
             'Program Id required for email, widget, messaging.'
           );
@@ -206,8 +181,8 @@ export default program => {
         const newOptions = {
           auth: base64.encode(':' + process.env.APIKEY),
           ...options,
-          domain: process.env.DOMAIN,
-          filepath: uploadInfo.filePath || process.cwd()
+          domain: process.env.HOST,
+          filepath: uploadInfo.filePath
         };
         render(<UploadAssets options={newOptions} />);
       } catch (e) {

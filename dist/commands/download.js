@@ -20,11 +20,15 @@ var _checkboxList = require('../components/checkbox-list');
 
 var _i18n = require('../utils/i18n');
 
-var _login = require('../utils/login');
+var _prompt = require('../utils/prompt');
 
 var _readline = require('readline');
 
 var _readline2 = _interopRequireDefault(_readline);
+
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -247,26 +251,17 @@ const FinishCheckmark = ({ name }) => (0, _ink.h)(
 exports.default = program => {
   let download = program.command('downloadTranslations');
 
-  download.description('download an translation')
-  // .option('-k,--apiKey <apiKey>', 'required - authToken') //the apiKey
-  // .option('-t,--tenant <tenant>', 'required - which tenant')
-  .option('-f,--filepath [filepath]', 'optional - the file path. Defaults to the current working directory.')
-  // .option(
-  //   '-d,--_domain [_domain]',
-  //   'optional - domain. May be useful if you are using a proxy.') //naming collision with domain, use _domain instead
-  .action(async options => {
-    // if (!options.apiKey || !options.tenant) {
-    //   console.log('Missing parameter');
-    //   return;
-    // }
-
-    const loginInfo = await (0, _login.login)();
+  download.description('download an translation').action(async options => {
+    _dotenv2.default.config();
+    const downloadInfo = await (0, _prompt.takeDownloadInfo)();
+    console.log(process.env.TENANT);
+    console.log(process.env.APIKEY);
     const newOptions = _extends({
-      auth: _base2.default.encode(':' + loginInfo.apiKey)
+      auth: _base2.default.encode(':' + process.env.APIKEY)
     }, options, {
-      tenant: loginInfo.tenant,
-      domain: loginInfo.domain,
-      filepath: loginInfo.filePath
+      tenant: process.env.TENANT,
+      domain: process.env.HOST,
+      filepath: downloadInfo.filePath
     });
     (0, _ink.render)((0, _ink.h)(DownloadAssets, { options: newOptions }));
   });

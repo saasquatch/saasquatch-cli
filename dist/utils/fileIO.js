@@ -17,11 +17,14 @@ const writeFile = _util2.default.promisify(_fs2.default.writeFile);
 const removeFile = _util2.default.promisify(_fs2.default.unlink);
 const fileExist = _fs2.default.existsSync;
 const appendFile = _util2.default.promisify(_fs2.default.appendFile);
-
+const createEnvFile = () => {
+    _fs2.default.createReadStream('.env.example').pipe(_fs2.default.createWriteStream('.env'));
+};
 module.exports = {
     readFile: readFile,
     writeFile: writeFile,
     removeFile: removeFile,
     appendFile: appendFile,
-    fileExist: fileExist
+    fileExist: fileExist,
+    createEnvFile: createEnvFile
 };
