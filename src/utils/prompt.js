@@ -3,7 +3,8 @@ import {fileExist, readFile,appendFile} from './fileIO';
 import { writeFile } from 'fs';
 
 export async function takeUploadInfo() {
-    const typename = await inquirer.prompt({
+    try {
+    const typename_choice = await inquirer.prompt({
         type:'list',
         name:'typename',
         message:'Asset type:',
@@ -13,13 +14,9 @@ export async function takeUploadInfo() {
             'Messaging',
             'Tenant Theme'
         ]
-    });
-
-    try {
-        await writeFile('./login.json', JSON.stringify(loginData));
-           
+    }); 
     let _typename = null;
-    switch (typename) {
+    switch (typename_choice.typename) {
         case 'Email':
             _typename = 'ProgramEmailConfig';
             break;

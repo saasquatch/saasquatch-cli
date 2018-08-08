@@ -36,10 +36,17 @@ var _glob = require('glob');
 
 var _glob2 = _interopRequireDefault(_glob);
 
+var _readline = require('readline');
+
+var _readline2 = _interopRequireDefault(_readline);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const fs_writeFile = _util2.default.promisify(_fs2.default.writeFile); //@ts-check
-
+// Allows for interactive keyboard stuff with Ink
+//@ts-check
+_readline2.default.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+const fs_writeFile = _util2.default.promisify(_fs2.default.writeFile);
 const fs_readFile = _util2.default.promisify(_fs2.default.readFile);
 const fs_open = _util2.default.promisify(_fs2.default.open);
 const prom_glob = _util2.default.promisify(_glob2.default);

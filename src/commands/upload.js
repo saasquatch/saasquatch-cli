@@ -6,6 +6,11 @@ import base64 from 'base-64';
 import { getValidFilelist, uploadFile } from '../utils/i18n';
 import { takeUploadInfo } from '../utils/prompt';
 import dotenv from 'dotenv';
+import readline from "readline";
+
+// Allows for interactive keyboard stuff with Ink
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
 
 const currentValidTypes = [
   'TenantTheme',
@@ -171,7 +176,7 @@ export default program => {
       dotenv.config();
       try {
         const uploadInfo = await takeUploadInfo();
-
+        console.log(uploadInfo.typename);
         if (uploadInfo.typename !== 'TenantTheme' && !process.env.SAASQUATCH_PROGRAM_ID) {
           console.log(
             'Program Id required for email, widget, messaging.'
@@ -182,7 +187,8 @@ export default program => {
           auth: base64.encode(':' + process.env.APIKEY),
           ...options,
           domain: process.env.HOST,
-          filepath: uploadInfo.filePath
+          filepath: uploadInfo.filePath,
+          typename: uploadInfo.typename
         };
         render(<UploadAssets options={newOptions} />);
       } catch (e) {

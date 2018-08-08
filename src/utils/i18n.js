@@ -6,7 +6,11 @@ import util from 'util';
 import fs from 'fs';
 import LocaleCode from 'locale-code';
 import glob from 'glob';
+import readline from "readline";
 
+// Allows for interactive keyboard stuff with Ink
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
 const fs_writeFile = util.promisify(fs.writeFile);
 const fs_readFile = util.promisify(fs.readFile);
 const fs_open = util.promisify(fs.open);

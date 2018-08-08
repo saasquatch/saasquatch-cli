@@ -254,8 +254,6 @@ exports.default = program => {
   download.description('download an translation').action(async options => {
     _dotenv2.default.config();
     const downloadInfo = await (0, _prompt.takeDownloadInfo)();
-    console.log(process.env.TENANT);
-    console.log(process.env.APIKEY);
     const newOptions = _extends({
       auth: _base2.default.encode(':' + process.env.APIKEY)
     }, options, {

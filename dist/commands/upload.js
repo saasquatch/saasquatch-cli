@@ -24,7 +24,15 @@ var _dotenv = require('dotenv');
 
 var _dotenv2 = _interopRequireDefault(_dotenv);
 
+var _readline = require('readline');
+
+var _readline2 = _interopRequireDefault(_readline);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Allows for interactive keyboard stuff with Ink
+_readline2.default.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
 
 const currentValidTypes = ['TenantTheme', 'ProgramEmailConfig', 'ProgramWidgetConfig', 'ProgramLinkConfig'];
 
@@ -193,7 +201,7 @@ exports.default = program => {
     _dotenv2.default.config();
     try {
       const uploadInfo = await (0, _prompt.takeUploadInfo)();
-
+      console.log(uploadInfo.typename);
       if (uploadInfo.typename !== 'TenantTheme' && !process.env.SAASQUATCH_PROGRAM_ID) {
         console.log('Program Id required for email, widget, messaging.');
         return;
@@ -202,7 +210,8 @@ exports.default = program => {
         auth: _base2.default.encode(':' + process.env.APIKEY)
       }, options, {
         domain: process.env.HOST,
-        filepath: uploadInfo.filePath
+        filepath: uploadInfo.filePath,
+        typename: uploadInfo.typename
       });
       (0, _ink.render)((0, _ink.h)(UploadAssets, { options: newOptions }));
     } catch (e) {

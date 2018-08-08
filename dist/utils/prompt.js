@@ -17,18 +17,15 @@ var _fs = require('fs');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 async function takeUploadInfo() {
-    const typename = await _inquirer2.default.prompt({
-        type: 'list',
-        name: 'typename',
-        message: 'Asset type:',
-        choices: ['Email', 'Widget', 'Messaging', 'Tenant Theme']
-    });
-
     try {
-        await (0, _fs.writeFile)('./login.json', JSON.stringify(loginData));
-
+        const typename_choice = await _inquirer2.default.prompt({
+            type: 'list',
+            name: 'typename',
+            message: 'Asset type:',
+            choices: ['Email', 'Widget', 'Messaging', 'Tenant Theme']
+        });
         let _typename = null;
-        switch (typename) {
+        switch (typename_choice.typename) {
             case 'Email':
                 _typename = 'ProgramEmailConfig';
                 break;
