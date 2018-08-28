@@ -201,7 +201,7 @@ async function uploadFile({ path, options }) {
     await graphql.uploadAssets(translationInstanceInput);
   } catch (e) {
     console.error(e);
-    process.exit();
+    //process.exit();
   }
   return true;
 }
@@ -304,7 +304,7 @@ async function getValidKeys(options) {
   } else {
     if (programId === undefined) {
       console.log('Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig');
-      process.exit(0);
+      //process.exit(0);
     }
 
     const graphql = (0, _query2.default)({
@@ -319,11 +319,11 @@ async function getValidKeys(options) {
         assets = receivedData.data.program.translatableAssets;
       } else {
         console.log('Program with id ' + programId + ' not found in current tenant.');
-        process.exit(0);
+        //process.exit(0);
       }
     } catch (e) {
       console.error(e);
-      process.exit(0);
+      //process.exit(0);
     }
 
     assets.forEach(asset => {

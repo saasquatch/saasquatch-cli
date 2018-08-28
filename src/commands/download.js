@@ -33,7 +33,7 @@ class DownloadAssets extends Component {
 
       if (assetList.length === 0) {
         console.log('\nNo available translatable asset found.');
-        process.exit();
+        //process.exit();
         return;
       }
 
@@ -42,8 +42,7 @@ class DownloadAssets extends Component {
       });
     } catch (e) {
       console.error(e);
-      process.exit();
-      return;
+      //process.exit();
     }
   }
 
@@ -53,7 +52,8 @@ class DownloadAssets extends Component {
 
   componentWillUpdate() {
     if (this.state.downloadDone) {
-      process.exit();
+      console.log("done");
+      //process.exit();
     }
   }
 
@@ -64,7 +64,7 @@ class DownloadAssets extends Component {
         submitted: true
       });
     } else {
-      process.exit();
+      //process.exit();
     }
   }
 
@@ -100,16 +100,18 @@ class DownloadAssets extends Component {
   }
 }
 
-const ListFile = props => (
-  <div>
-    <br />
+function ListFile (props) {
+  return (
+    <div>
+    <br/>
     Use arrow keys to move between options. Use space to select and enter to
-    submit.<br />
+    submit.<br/>
     <List onSubmit={list => props.onListSubmitted(list)}>
       {props.assetList.map(l => <ListItem value={l}>{l.name}</ListItem>)}
     </List>
-  </div>
+    </div> 
 );
+}
 
 class Downloading extends Component {
   constructor(props) {
@@ -190,7 +192,7 @@ class DownloadEachAsset extends Component {
     } catch (e) {
       // Hard bail out if any asset fails
       console.error(e);
-      process.exit(0);
+      //process.exit(0);
     }
     this.props.handleDownloadDone(this.props.assetData.name);
   }

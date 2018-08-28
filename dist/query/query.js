@@ -85,7 +85,7 @@ const Query = ({ domain, tenant, authToken }) => {
                       shareMedium
                       config
                     }
-                    messengerLinkOpenGraph {
+                    messsageLinkOpenGraph {
                       title
                       description
                       image
@@ -143,7 +143,7 @@ const Query = ({ domain, tenant, authToken }) => {
                         shareMedium
                         config
                       }
-                      messengerLinkOpenGraph {
+                      messageLinkOpenGraph {
                         title
                         description
                         image

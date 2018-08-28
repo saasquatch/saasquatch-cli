@@ -169,7 +169,7 @@ export async function uploadFile({ path, options }) {
     await graphql.uploadAssets(translationInstanceInput);
   } catch (e) {
     console.error(e);
-    process.exit();
+    //process.exit();
   }
   return true;
 }
@@ -277,7 +277,7 @@ async function getValidKeys(options) {
       console.log(
         'Program ID required for ProgramEmailConfig, ProgramWidgetConfig, ProgramLinkConfig'
       );
-      process.exit(0);
+      //process.exit(0);
     }
 
     const graphql = Query({
@@ -294,11 +294,11 @@ async function getValidKeys(options) {
         console.log(
           'Program with id ' + programId + ' not found in current tenant.'
         );
-        process.exit(0);
+        //process.exit(0);
       }
     } catch (e) {
       console.error(e);
-      process.exit(0);
+      //process.exit(0);
     }
 
     assets.forEach(asset => {

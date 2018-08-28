@@ -56,7 +56,7 @@ class DownloadAssets extends _ink.Component {
 
       if (assetList.length === 0) {
         console.log('\nNo available translatable asset found.');
-        process.exit();
+        //process.exit();
         return;
       }
 
@@ -65,8 +65,7 @@ class DownloadAssets extends _ink.Component {
       });
     } catch (e) {
       console.error(e);
-      process.exit();
-      return;
+      //process.exit();
     }
   }
 
@@ -76,7 +75,8 @@ class DownloadAssets extends _ink.Component {
 
   componentWillUpdate() {
     if (this.state.downloadDone) {
-      process.exit();
+      console.log("done");
+      //process.exit();
     }
   }
 
@@ -87,7 +87,7 @@ class DownloadAssets extends _ink.Component {
         submitted: true
       });
     } else {
-      process.exit();
+      //process.exit();
     }
   }
 
@@ -120,22 +120,24 @@ class DownloadAssets extends _ink.Component {
   }
 }
 
-const ListFile = props => (0, _ink.h)(
-  'div',
-  null,
-  (0, _ink.h)('br', null),
-  'Use arrow keys to move between options. Use space to select and enter to submit.',
-  (0, _ink.h)('br', null),
-  (0, _ink.h)(
-    _checkboxList.List,
-    { onSubmit: list => props.onListSubmitted(list) },
-    props.assetList.map(l => (0, _ink.h)(
-      _checkboxList.ListItem,
-      { value: l },
-      l.name
-    ))
-  )
-);
+function ListFile(props) {
+  return (0, _ink.h)(
+    'div',
+    null,
+    (0, _ink.h)('br', null),
+    'Use arrow keys to move between options. Use space to select and enter to submit.',
+    (0, _ink.h)('br', null),
+    (0, _ink.h)(
+      _checkboxList.List,
+      { onSubmit: list => props.onListSubmitted(list) },
+      props.assetList.map(l => (0, _ink.h)(
+        _checkboxList.ListItem,
+        { value: l },
+        l.name
+      ))
+    )
+  );
+}
 
 class Downloading extends _ink.Component {
   constructor(props) {
@@ -212,7 +214,7 @@ class DownloadEachAsset extends _ink.Component {
     } catch (e) {
       // Hard bail out if any asset fails
       console.error(e);
-      process.exit(0);
+      //process.exit(0);
     }
     this.props.handleDownloadDone(this.props.assetData.name);
   }
